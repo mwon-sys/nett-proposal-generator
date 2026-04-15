@@ -7,19 +7,19 @@ import { toast } from "sonner";
 
 // ─── CDN Asset URLs ───────────────────────────────────────────────────────────
 const ASSETS = {
-  joe:     "https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/joe_44cd22af.jpg",
-  ally:    "https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/ally_26bc36d2.png",
-  connor:  "https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/connor_1d2f7df3.png",
-  mike:    "https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/mike_77921465.jpg",
-  brandon: "https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/brandon_7039bf1b.jpg",
-  sean:    "https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/sean_fcc39372.jpg",
-  googlePremier: "https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/badge-google-premier_95705ae6.jpg",
-  bing:    "https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/badge-bing_780e34fb.png",
-  bbb:     "https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/badge-bbb_a03b92d7.png",
-  yelp:    "https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/badge-yelp_44b898d2.png",
-  linkedin:"https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/badge-linkedin_00dde6ca.png",
-  tiktokBadge: "https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/badge-tiktok_2938edf0.svg",
-  metaBadge:   "https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/badge-meta_9a210061.svg",
+  joe:     "https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/joe_94493229.jpg",
+  ally:    "https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/ally_8510c541.png",
+  connor:  "https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/connor_e1c4ec15.png",
+  mike:    "https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/mike_4d1169c8.jpg",
+  brandon: "https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/brandon_71f190c7.jpg",
+  sean:    "https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/sean_eeb76526.jpg",
+  googlePremier: "https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/badge-google-premier_111cdd40.jpg",
+  bing:    "https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/badge-bing_42c708e1.png",
+  bbb:     "https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/badge-bbb_a453f5dc.png",
+  yelp:    "https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/badge-yelp_a7cdb766.png",
+  linkedin:"https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/badge-linkedin_5e37d58c.png",
+  tiktokBadge: "https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/badge-tiktok_7cf59630.png",
+  metaBadge:   "https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/badge-meta_60f9f5d6.png",
 };
 
 const TEAM = [
@@ -272,10 +272,13 @@ export default function ProposalView() {
   const pd = data.proposalData as ProposalData;
   if (!pd) return null;
 
-  const { fee } = { fee: getManagementFee(pd.totalMonthlySpend, pd.isEcommerce) };
   const mgmtFee = getManagementFee(pd.totalMonthlySpend, pd.isEcommerce);
-  const heroImg = pd.heroImage || pd.clientImages?.[0] || "";
-  const clientImgs = pd.clientImages || [];
+  // Images are stored in pd.images object from the generator
+  const imgs = (pd as any).images || {};
+  const heroImg = imgs.hero || imgs.campaign || "";
+  const clientImgs = [imgs.hero, imgs.campaign, imgs.process1, imgs.process2, imgs.process3].filter(Boolean) as string[];
+  // Copy fields from pd.copy object
+  const copy = (pd as any).copy || {};
 
   return (
     <div className="min-h-screen bg-white">
@@ -346,18 +349,34 @@ export default function ProposalView() {
         <section className="proposal-avoid-break py-20 px-12 max-w-6xl mx-auto">
           <p className="text-green-600 text-xs font-semibold tracking-widest uppercase mb-3">Market Opportunity</p>
           <h2 className="text-4xl font-bold text-gray-900 mb-6 max-w-2xl" style={{ fontFamily: "'Playfair Display', serif" }}>
-            {pd.marketHeadline || `The ${pd.industry} Market Is Growing — and the Timing Is Right`}
+            {copy.marketHeadline || `The ${pd.industry} Market Is Growing — and the Timing Is Right`}
           </h2>
-          <div className="grid grid-cols-3 gap-6 mb-10">
-            {[pd.marketStat1, pd.marketStat2, pd.marketStat3].filter(Boolean).map((stat, i) => (
-              <div key={i} className="p-6 rounded-2xl border border-gray-100 bg-gray-50">
-                <p className="text-gray-700 text-sm leading-relaxed">{stat}</p>
-              </div>
-            ))}
-          </div>
+          {/* Stats grid from AI-generated marketStats array */}
+          {copy.marketStats && copy.marketStats.length > 0 ? (
+            <div className="grid grid-cols-4 gap-6 mb-10">
+              {copy.marketStats.map((stat: { number: string; label: string }, i: number) => (
+                <div key={i} className="p-6 rounded-2xl border border-gray-100 bg-gray-50 text-center">
+                  <p className="text-3xl font-bold mb-2" style={{ color: "oklch(0.42 0.12 145)", fontFamily: "'Playfair Display', serif" }}>{stat.number}</p>
+                  <p className="text-gray-600 text-sm leading-relaxed">{stat.label}</p>
+                </div>
+              ))}
+            </div>
+          ) : null}
+          {/* Insights list */}
+          {copy.marketInsights && copy.marketInsights.length > 0 ? (
+            <div className="space-y-2 mb-8">
+              {copy.marketInsights.map((insight: string, i: number) => (
+                <div key={i} className="flex items-start gap-3">
+                  <span className="mt-1.5 w-2 h-2 rounded-full shrink-0" style={{ background: "oklch(0.42 0.12 145)" }} />
+                  <p className="text-gray-700 text-base leading-relaxed">{insight}</p>
+                </div>
+              ))}
+            </div>
+          ) : null}
           <p className="text-gray-600 text-lg leading-relaxed max-w-3xl">
-            {pd.marketBody || `The digital advertising landscape presents a significant opportunity for ${pd.clientName}. With the right strategy and the right partner, the path to growth is clear.`}
+            {copy.marketIntro || `The digital advertising landscape presents a significant opportunity for ${pd.clientName}. With the right strategy and the right partner, the path to growth is clear.`}
           </p>
+          {copy.marketSource && <p className="text-gray-400 text-xs mt-4">{copy.marketSource}</p>}
         </section>
 
         {/* ── Section 3: Goals ─────────────────────────────────────────── */}
@@ -365,16 +384,16 @@ export default function ProposalView() {
           <div className="max-w-6xl mx-auto px-12">
             <p className="text-green-600 text-xs font-semibold tracking-widest uppercase mb-3">Our Goals Together</p>
             <h2 className="text-4xl font-bold text-gray-900 mb-10 max-w-2xl" style={{ fontFamily: "'Playfair Display', serif" }}>
-              {pd.goalsHeadline || `What We're Here to Accomplish for ${pd.clientName}`}
-            </h2>
-            <div className="grid grid-cols-2 gap-6">
-              {(pd.goalsList || [{ title: "Increase Revenue", description: pd.goals }]).map((g, i) => (
+            {copy.goalsHeadline || `What We're Here to Accomplish for ${pd.clientName}`}
+          </h2>
+          <div className="grid grid-cols-2 gap-6">
+            {(copy.goalsList || [{ title: "Increase Revenue", body: pd.goals }]).map((g: { title: string; body?: string; description?: string }, i: number) => (
                 <div key={i} className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
                   <div className="w-8 h-8 rounded-full flex items-center justify-center mb-4 text-white text-sm font-bold" style={{ background: "oklch(0.42 0.12 145)" }}>
                     {i + 1}
                   </div>
                   <h3 className="font-semibold text-gray-900 mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>{g.title}</h3>
-                  <p className="text-gray-500 text-sm leading-relaxed">{g.description}</p>
+                  <p className="text-gray-500 text-sm leading-relaxed">{g.body || g.description}</p>
                 </div>
               ))}
             </div>
@@ -386,15 +405,16 @@ export default function ProposalView() {
           <div className="max-w-6xl mx-auto px-12">
             <p className="text-green-600 text-xs font-semibold tracking-widest uppercase mb-3">Campaign Strategy</p>
             <h2 className="text-4xl font-bold text-gray-900 mb-4" style={{ fontFamily: "'Playfair Display', serif" }}>
-              {pd.campaignHeadline || "The Right Channels, The Right Message"}
+              {copy.campaignHeadline || "The Right Channels, The Right Message"}
             </h2>
-            <p className="text-gray-500 mb-10 max-w-2xl">{pd.campaignIntro || `Here's how we'll reach ${pd.clientName}'s ideal customers across the channels that matter most.`}</p>
+            <p className="text-gray-500 mb-10 max-w-2xl">{copy.campaignIntro || `Here's how we'll reach ${pd.clientName}'s ideal customers across the channels that matter most.`}</p>
 
             {/* Layout B: Side image + card list */}
             <div className="grid grid-cols-5 gap-8 items-start">
               <div className="col-span-2 rounded-2xl overflow-hidden" style={{ minHeight: "400px" }}>
-                {clientImgs[1] ? (
-                  <img src={clientImgs[1]} alt={pd.clientName} className="w-full h-full object-cover" style={{ minHeight: "400px" }} />
+                {imgs.campaign ? (
+                  <img src={imgs.campaign} alt={pd.clientName} className="w-full h-full object-cover" style={{ minHeight: "400px" }}
+                    onError={(e) => { const el = e.target as HTMLImageElement; el.style.display='none'; }} />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center" style={{ background: "oklch(0.12 0.02 240)", minHeight: "400px" }}>
                     <span className="text-white/30 text-lg font-medium">{pd.clientName}</span>
@@ -415,7 +435,7 @@ export default function ProposalView() {
                         </span>
                       </div>
                       <p className="text-gray-500 text-xs leading-relaxed">
-                        {pd.channelDescriptions?.[ch.name] || `Strategic ${ch.name} campaigns targeting ${pd.clientName}'s ideal customers with compelling ads and optimized bidding.`}
+                        {copy.campaignDescriptions?.[ch.name] || pd.channelDescriptions?.[ch.name] || `Strategic ${ch.name} campaigns targeting ${pd.clientName}'s ideal customers with compelling ads and optimized bidding.`}
                       </p>
                     </div>
                   </div>
@@ -430,30 +450,32 @@ export default function ProposalView() {
           <div className="max-w-6xl mx-auto px-12">
             <p className="text-green-600 text-xs font-semibold tracking-widest uppercase mb-3">Our Process</p>
             <h2 className="text-4xl font-bold text-gray-900 mb-10 max-w-2xl" style={{ fontFamily: "'Playfair Display', serif" }}>
-              {pd.processHeadline || "How We Turn Ad Spend Into Real Results"}
+              {copy.processHeadline || "How We Turn Ad Spend Into Real Results"}
             </h2>
             <div className="grid grid-cols-3 gap-6 mb-10">
-              {(pd.processSteps || [
-                { step: "01", title: "Discovery & Strategy", description: "We deep-dive into your business, competitors, and target audience to build a data-backed strategy from day one." },
-                { step: "02", title: "Build & Launch", description: "Our team builds every campaign with precision — from keyword research and ad copy to audience targeting and bid strategy." },
-                { step: "03", title: "Optimize & Scale", description: "We monitor performance daily, make data-driven adjustments, and scale what's working to maximize your return." },
-              ]).map((s, i) => (
+              {(copy.processSteps || [
+                { number: "01", title: "Discovery & Strategy", body: "We deep-dive into your business, competitors, and target audience to build a data-backed strategy from day one." },
+                { number: "02", title: "Build & Launch", body: "Our team builds every campaign with precision — from keyword research and ad copy to audience targeting and bid strategy." },
+                { number: "03", title: "Optimize & Scale", body: "We monitor performance daily, make data-driven adjustments, and scale what's working to maximize your return." },
+              ]).slice(0, 3).map((s: { number?: string; step?: string; title: string; body?: string; description?: string }, i: number) => (
                 <div key={i} className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
-                  <span className="text-4xl font-bold" style={{ color: "oklch(0.9 0.04 145)", fontFamily: "'Playfair Display', serif" }}>{s.step}</span>
+                  <span className="text-4xl font-bold" style={{ color: "oklch(0.9 0.04 145)", fontFamily: "'Playfair Display', serif" }}>{s.number || s.step}</span>
                   <h3 className="font-semibold text-gray-900 mt-3 mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>{s.title}</h3>
-                  <p className="text-gray-500 text-sm leading-relaxed">{s.description}</p>
+                  <p className="text-gray-500 text-sm leading-relaxed">{s.body || s.description}</p>
                 </div>
               ))}
             </div>
             {/* Image strip */}
             <div className="grid grid-cols-3 gap-4 rounded-2xl overflow-hidden">
-              {clientImgs.slice(0, 3).map((img, i) => (
-                <div key={i} className="aspect-video overflow-hidden">
-                  <img src={img} alt="" className="w-full h-full object-cover" />
-                </div>
-              ))}
-              {clientImgs.length < 3 && Array.from({ length: 3 - clientImgs.length }).map((_, i) => (
-                <div key={`placeholder-${i}`} className="aspect-video rounded-xl" style={{ background: "oklch(0.85 0.04 145)" }} />
+              {[imgs.process1 || imgs.hero, imgs.process2 || imgs.campaign, imgs.process3 || imgs.hero].map((img, i) => (
+                img ? (
+                  <div key={i} className="aspect-video overflow-hidden rounded-xl">
+                    <img src={img} alt="" className="w-full h-full object-cover"
+                      onError={(e) => { const el = e.target as HTMLImageElement; el.parentElement!.style.background='oklch(0.85 0.04 145)'; el.style.display='none'; }} />
+                  </div>
+                ) : (
+                  <div key={i} className="aspect-video rounded-xl" style={{ background: "oklch(0.85 0.04 145)" }} />
+                )
               ))}
             </div>
           </div>
@@ -543,22 +565,22 @@ export default function ProposalView() {
               <div>
                 <p className="text-green-400 text-xs font-semibold tracking-widest uppercase mb-4">Why Nett Solutions</p>
                 <h2 className="text-4xl font-bold text-white leading-tight mb-6" style={{ fontFamily: "'Playfair Display', serif" }}>
-                  {pd.whyHeadline || "We Don't Just Run Ads. We Build Growth Engines."}
+                  {copy.whyHeadline || "We Don't Just Run Ads. We Build Growth Engines."}
                 </h2>
                 <p className="text-white/60 leading-relaxed">
-                  We're a Google Premier Partner — a designation earned by fewer than 3% of agencies worldwide. But credentials are only part of the story. What sets us apart is how we work: transparent, relentless, and always focused on your bottom line.
+                  {copy.whyIntro || "We're a Google Premier Partner — a designation earned by fewer than 3% of agencies worldwide. But credentials are only part of the story. What sets us apart is how we work: transparent, relentless, and always focused on your bottom line."}
                 </p>
               </div>
               <div className="space-y-4">
-                {(pd.whyPoints || [
-                  { title: "Google Premier Partner", description: "Top 3% of Google Partners globally — we have direct access to Google's tools, betas, and support." },
-                  { title: "Full Transparency", description: "You own your accounts. You see every dollar spent. No black boxes, no hidden fees." },
-                  { title: "Dedicated Team", description: "You get a real team, not a rotating cast of account managers. We know your business." },
-                  { title: "Performance-Focused", description: "We're obsessed with ROI. Every decision we make is driven by data, not guesswork." },
-                ]).map((p, i) => (
+                {(copy.whyCredentials || [
+                  { title: "Google Premier Partner", body: "Top 3% of Google Partners globally — we have direct access to Google's tools, betas, and support." },
+                  { title: "Full Transparency", body: "You own your accounts. You see every dollar spent. No black boxes, no hidden fees." },
+                  { title: "Dedicated Team", body: "You get a real team, not a rotating cast of account managers. We know your business." },
+                  { title: "Performance-Focused", body: "We're obsessed with ROI. Every decision we make is driven by data, not guesswork." },
+                ]).map((p: { title: string; body?: string; description?: string }, i: number) => (
                   <div key={i} className="border-l-2 pl-5 py-1" style={{ borderColor: "oklch(0.42 0.12 145)" }}>
                     <h3 className="text-white font-semibold mb-1 text-sm">{p.title}</h3>
-                    <p className="text-white/50 text-sm leading-relaxed">{p.description}</p>
+                    <p className="text-white/50 text-sm leading-relaxed">{p.body || p.description}</p>
                   </div>
                 ))}
               </div>
@@ -571,10 +593,10 @@ export default function ProposalView() {
           <div className="max-w-6xl mx-auto px-12 text-center">
             <p className="text-green-400 text-xs font-semibold tracking-widest uppercase mb-4">Ready to Grow?</p>
             <h2 className="text-4xl font-bold text-white mb-6 max-w-2xl mx-auto" style={{ fontFamily: "'Playfair Display', serif" }}>
-              {pd.ctaHeadline || `Let's Build Something Great Together, ${pd.clientName}`}
+              {copy.ctaHeadline || `Let's Build Something Great Together, ${pd.clientName}`}
             </h2>
             <p className="text-white/60 mb-10 max-w-xl mx-auto leading-relaxed">
-              {pd.ctaBody || `We're ready to put our expertise to work for you. Reach out to ${pd.salesRep} to schedule your strategy call and take the first step toward measurable growth.`}
+              {copy.ctaBody || `We're ready to put our expertise to work for you. Reach out to ${pd.salesRep} to schedule your strategy call and take the first step toward measurable growth.`}
             </p>
             <div className="inline-flex flex-col items-center gap-1 mb-14">
               <p className="text-white font-semibold text-lg">{pd.salesRep}</p>

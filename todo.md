@@ -43,8 +43,13 @@
 
 ## Phase 6: Testing & Delivery
 - [x] Vitest tests: 23 passing (fee calc, password, auth logout)
-- [ ] End-to-end test with Cali Dumpling data
-- [ ] End-to-end test with Crema Cafe data
-- [ ] Fix any rendering issues
+- [x] End-to-end test with Cali Dumpling data (ecommerce)
+- [x] End-to-end test with Pacific Dental data (non-ecommerce)
+- [x] Fix Market Opportunity stats rendering (copy.marketStats array)
+- [x] Fix Goals section rendering (copy.goalsList array)
+- [x] Fix Why Nett Solutions section rendering (copy.whyCredentials array)
+- [x] Fix CTA section rendering (copy.ctaHeadline, copy.ctaBody)
+- [x] Fix team photos CDN URLs
+- [x] Fix Meta/TikTok badge rendering
 - [ ] Save checkpoint
 - [ ] Deliver to Mike
