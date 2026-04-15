@@ -1,17 +1,7 @@
-import { int, mysqlEnum, mysqlTable, text, timestamp, varchar } from "drizzle-orm/mysql-core";
+import { int, mysqlEnum, mysqlTable, text, timestamp, varchar, json, boolean } from "drizzle-orm/mysql-core";
 
-/**
- * Core user table backing auth flow.
- * Extend this file with additional tables as your product grows.
- * Columns use camelCase to match both database fields and generated types.
- */
 export const users = mysqlTable("users", {
-  /**
-   * Surrogate primary key. Auto-incremented numeric value managed by the database.
-   * Use this for relations between tables.
-   */
   id: int("id").autoincrement().primaryKey(),
-  /** Manus OAuth identifier (openId) returned from the OAuth callback. Unique per user. */
   openId: varchar("openId", { length: 64 }).notNull().unique(),
   name: text("name"),
   email: varchar("email", { length: 320 }),
@@ -22,7 +12,29 @@ export const users = mysqlTable("users", {
   lastSignedIn: timestamp("lastSignedIn").defaultNow().notNull(),
 });
 
+export const proposals = mysqlTable("proposals", {
+  id: int("id").autoincrement().primaryKey(),
+  slug: varchar("slug", { length: 64 }).notNull().unique(),
+  clientName: varchar("clientName", { length: 256 }).notNull(),
+  clientWebsite: varchar("clientWebsite", { length: 512 }).notNull(),
+  industry: varchar("industry", { length: 256 }).notNull(),
+  isEcommerce: boolean("isEcommerce").default(false).notNull(),
+  goals: text("goals").notNull(),
+  salesRep: varchar("salesRep", { length: 128 }).notNull(),
+  salesRepEmail: varchar("salesRepEmail", { length: 320 }),
+  salesRepPhone: varchar("salesRepPhone", { length: 32 }),
+  setupFee: int("setupFee").default(0).notNull(),
+  channels: json("channels").notNull(), // Array of {name, budget}
+  totalMonthlySpend: int("totalMonthlySpend").default(0).notNull(),
+  managementFee: int("managementFee").default(0).notNull(),
+  managementFeePercent: varchar("managementFeePercent", { length: 16 }).notNull(),
+  proposalData: json("proposalData"), // Full AI-generated proposal content
+  status: mysqlEnum("status", ["generating", "ready", "error"]).default("generating").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
 export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
-
-// TODO: Add your tables here
+export type Proposal = typeof proposals.$inferSelect;
+export type InsertProposal = typeof proposals.$inferInsert;

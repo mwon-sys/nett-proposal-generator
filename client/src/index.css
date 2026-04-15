@@ -43,16 +43,21 @@
 }
 
 :root {
-  --primary: var(--color-blue-700);
-  --primary-foreground: var(--color-blue-50);
-  --sidebar-primary: var(--color-blue-600);
-  --sidebar-primary-foreground: var(--color-blue-50);
+  /* Nett Solutions Brand */
+  --nett-green: oklch(0.42 0.12 145);
+  --nett-dark: oklch(0.12 0.02 240);
+  --nett-navy: oklch(0.18 0.04 240);
+  --nett-cream: oklch(0.97 0.01 90);
+  --primary: oklch(0.42 0.12 145);
+  --primary-foreground: oklch(1 0 0);
+  --sidebar-primary: oklch(0.42 0.12 145);
+  --sidebar-primary-foreground: oklch(1 0 0);
   --chart-1: var(--color-blue-300);
   --chart-2: var(--color-blue-500);
   --chart-3: var(--color-blue-600);
   --chart-4: var(--color-blue-700);
   --chart-5: var(--color-blue-800);
-  --radius: 0.65rem;
+  --radius: 0.5rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.235 0.015 65);
   --card: oklch(1 0 0);
@@ -119,7 +124,20 @@
   }
   body {
     @apply bg-background text-foreground;
+    -webkit-font-smoothing: antialiased;
   }
+  h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; }
+}
+
+/* Proposal print styles */
+@media print {
+  @page { margin: 0; size: letter; }
+  .no-print { display: none !important; }
+  .proposal-page-break { page-break-before: always; }
+  .proposal-avoid-break { page-break-inside: avoid; }
+}
+
+@layer base {
   button:not(:disabled),
   [role="button"]:not([aria-disabled="true"]),
   [type="button"]:not(:disabled),

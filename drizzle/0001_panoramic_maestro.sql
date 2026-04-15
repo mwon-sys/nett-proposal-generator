@@ -1,0 +1,23 @@
+CREATE TABLE `proposals` (
+	`id` int AUTO_INCREMENT NOT NULL,
+	`slug` varchar(64) NOT NULL,
+	`clientName` varchar(256) NOT NULL,
+	`clientWebsite` varchar(512) NOT NULL,
+	`industry` varchar(256) NOT NULL,
+	`isEcommerce` boolean NOT NULL DEFAULT false,
+	`goals` text NOT NULL,
+	`salesRep` varchar(128) NOT NULL,
+	`salesRepEmail` varchar(320),
+	`salesRepPhone` varchar(32),
+	`setupFee` int NOT NULL DEFAULT 0,
+	`channels` json NOT NULL,
+	`totalMonthlySpend` int NOT NULL DEFAULT 0,
+	`managementFee` int NOT NULL DEFAULT 0,
+	`managementFeePercent` varchar(16) NOT NULL,
+	`proposalData` json,
+	`status` enum('generating','ready','error') NOT NULL DEFAULT 'generating',
+	`createdAt` timestamp NOT NULL DEFAULT (now()),
+	`updatedAt` timestamp NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,
+	CONSTRAINT `proposals_id` PRIMARY KEY(`id`),
+	CONSTRAINT `proposals_slug_unique` UNIQUE(`slug`)
+);
