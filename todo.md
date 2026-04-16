@@ -64,3 +64,8 @@
 - [x] Investment: Restore original layout - management fee block + one-time setup block side by side, add sliding scale disclaimer text, remove green box style
 - [x] Meet the Team: Remove individual rectangular boxes, show team in open grid layout, quote in its own box at bottom, titles in green
 - [x] CTA (Ready to Get Started): Add prospect image on the section
+
+## Phase 8: Additional Fixes (Mike's Feedback Round 2)
+- [ ] Fix Meta and TikTok badges not showing in credentials section at bottom of CTA
+- [ ] Campaign Strategy rows: add green circle platform logo icon before each channel name
+- [ ] Campaign Strategy rows: remove monthly budget pill from each row

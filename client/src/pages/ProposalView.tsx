@@ -19,8 +19,8 @@ const ASSETS = {
   bbb:     "https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/badge-bbb_a03b92d7.png",
   yelp:    "https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/badge-yelp_44b898d2.png",
   linkedin:"https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/badge-linkedin_00dde6ca.png",
-  tiktokBadge: "https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/badge-tiktok_2938edf0.svg",
-  metaBadge:   "https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/badge-meta_9a210061.svg",
+  tiktokBadge: "https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/badge-tiktok_80d3495c.png",
+  metaBadge:   "https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/badge-meta_988805b7.png",
 };
 
 const TEAM = [
@@ -464,18 +464,15 @@ export default function ProposalView() {
               <div className="space-y-3">
                 {pd.channels.map((ch, i) => (
                   <div key={i} className="flex gap-4 items-start p-4 rounded-xl" style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.08)" }}>
-                    <div className="flex items-center justify-between w-full gap-4">
-                      <div className="flex-1">
-                        <div className="flex items-center justify-between mb-1">
-                          <h3 className="font-semibold text-white text-sm">{ch.name}</h3>
-                          <span className="text-xs font-semibold px-2 py-0.5 rounded-full" style={{ background: "rgba(255,255,255,0.12)", color: "oklch(0.75 0.12 145)" }}>
-                            {formatCurrency(ch.budget)}/mo
-                          </span>
-                        </div>
-                        <p className="text-white/40 text-xs leading-relaxed">
-                          {copy.campaignDescriptions?.[ch.name] || `Strategic ${ch.name} campaigns targeting ${pd.clientName}'s ideal customers with compelling ads and optimized bidding.`}
-                        </p>
-                      </div>
+                    {/* Green circle with platform logo */}
+                    <div className="w-9 h-9 rounded-full flex items-center justify-center shrink-0 mt-0.5" style={{ background: GREEN }}>
+                      <ChannelLogo name={ch.name} />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-semibold text-white text-sm mb-1">{ch.name}</h3>
+                      <p className="text-white/40 text-xs leading-relaxed">
+                        {copy.campaignDescriptions?.[ch.name] || `Strategic ${ch.name} campaigns targeting ${pd.clientName}'s ideal customers with compelling ads and optimized bidding.`}
+                      </p>
                     </div>
                   </div>
                 ))}
