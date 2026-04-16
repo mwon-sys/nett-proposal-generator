@@ -7,19 +7,20 @@ import { toast } from "sonner";
 
 // ─── CDN Asset URLs ───────────────────────────────────────────────────────────
 const ASSETS = {
-  joe:     "https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/joe_94493229.jpg",
-  ally:    "https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/ally_8510c541.png",
-  connor:  "https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/connor_e1c4ec15.png",
-  mike:    "https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/mike_4d1169c8.jpg",
-  brandon: "https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/brandon_71f190c7.jpg",
-  sean:    "https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/sean_eeb76526.jpg",
-  googlePremier: "https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/badge-google-premier_111cdd40.jpg",
-  bing:    "https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/badge-bing_42c708e1.png",
-  bbb:     "https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/badge-bbb_a453f5dc.png",
-  yelp:    "https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/badge-yelp_a7cdb766.png",
-  linkedin:"https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/badge-linkedin_5e37d58c.png",
-  tiktokBadge: "https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/badge-tiktok_7cf59630.png",
-  metaBadge:   "https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/badge-meta_60f9f5d6.png",
+  nettLogo: "https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/ppclogo_white_4ed47851.png",
+  joe:     "https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/joe_44cd22af.jpg",
+  ally:    "https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/ally_26bc36d2.png",
+  connor:  "https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/connor_1d2f7df3.png",
+  mike:    "https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/mike_77921465.jpg",
+  brandon: "https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/brandon_7039bf1b.jpg",
+  sean:    "https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/sean_fcc39372.jpg",
+  googlePremier: "https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/badge-google-premier_95705ae6.jpg",
+  bing:    "https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/badge-bing_780e34fb.png",
+  bbb:     "https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/badge-bbb_a03b92d7.png",
+  yelp:    "https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/badge-yelp_44b898d2.png",
+  linkedin:"https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/badge-linkedin_00dde6ca.png",
+  tiktokBadge: "https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/badge-tiktok_2938edf0.svg",
+  metaBadge:   "https://d2xsxph8kpxj0f.cloudfront.net/310519663383678254/Jb8k7A6LoQLjN5bypJ6s2b/badge-meta_9a210061.svg",
 };
 
 const TEAM = [
@@ -67,11 +68,10 @@ function ChannelLogo({ name }: { name: string }) {
       <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
     </svg>
   );
-  // Generic
   return <span className="text-white text-xs font-bold">{name.charAt(0)}</span>;
 }
 
-// ─── Proposal Sections ────────────────────────────────────────────────────────
+// ─── Proposal Data Interface ──────────────────────────────────────────────────
 interface ProposalData {
   clientName: string;
   clientWebsite: string;
@@ -86,31 +86,18 @@ interface ProposalData {
   totalMonthlySpend: number;
   managementFee: number;
   managementFeePercent: string | number;
-  // AI-generated content
   coverHeadline?: string;
   coverSubheadline?: string;
-  marketHeadline?: string;
-  marketStat1?: string;
-  marketStat2?: string;
-  marketStat3?: string;
-  marketBody?: string;
-  goalsHeadline?: string;
-  goalsList?: { title: string; description: string }[];
-  campaignHeadline?: string;
-  campaignIntro?: string;
-  channelDescriptions?: Record<string, string>;
-  processHeadline?: string;
-  processSteps?: { step: string; title: string; description: string }[];
-  whyHeadline?: string;
-  whyPoints?: { title: string; description: string }[];
-  ctaHeadline?: string;
-  ctaBody?: string;
   clientImages?: string[];
   heroImage?: string;
 }
 
 function formatCurrency(n: number) {
   return "$" + n.toLocaleString();
+}
+
+function formatDate(d: Date | string) {
+  return new Date(d).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
 }
 
 function getManagementFee(totalSpend: number, isEcommerce: boolean): { percent: string; fee: number } {
@@ -192,7 +179,6 @@ function FeeTable({ totalSpend, isEcommerce }: { totalSpend: number; isEcommerce
 export default function ProposalView() {
   const { slug } = useParams<{ slug: string }>();
   const [, navigate] = useLocation();
-  const proposalRef = useRef<HTMLDivElement>(null);
   const [copied, setCopied] = useState(false);
 
   const { data, isLoading, error } = trpc.proposal.getBySlug.useQuery(
@@ -273,12 +259,19 @@ export default function ProposalView() {
   if (!pd) return null;
 
   const mgmtFee = getManagementFee(pd.totalMonthlySpend, pd.isEcommerce);
-  // Images are stored in pd.images object from the generator
   const imgs = (pd as any).images || {};
   const heroImg = imgs.hero || imgs.campaign || "";
-  const clientImgs = [imgs.hero, imgs.campaign, imgs.process1, imgs.process2, imgs.process3].filter(Boolean) as string[];
-  // Copy fields from pd.copy object
   const copy = (pd as any).copy || {};
+  // Pick up to 3 images for the process ribbon
+  const processImgs = [
+    imgs.process1 || imgs.hero,
+    imgs.process2 || imgs.campaign,
+    imgs.process3 || imgs.hero,
+  ].filter(Boolean) as string[];
+
+  const GREEN = "oklch(0.42 0.12 145)";
+  const DARK_NAVY = "oklch(0.12 0.02 240)";
+  const SERIF = "'Playfair Display', serif";
 
   return (
     <div className="min-h-screen bg-white">
@@ -297,7 +290,7 @@ export default function ProposalView() {
             <Button variant="outline" size="sm" onClick={handleShare} className="gap-2">
               <Share2 className="w-4 h-4" />{copied ? "Copied!" : "Share Link"}
             </Button>
-            <Button size="sm" onClick={handlePrint} className="gap-2" style={{ background: "oklch(0.12 0.02 240)" }}>
+            <Button size="sm" onClick={handlePrint} className="gap-2" style={{ background: DARK_NAVY }}>
               <Download className="w-4 h-4" />Download PDF
             </Button>
           </div>
@@ -305,138 +298,184 @@ export default function ProposalView() {
       </div>
 
       {/* Proposal Content */}
-      <div ref={proposalRef} className="proposal-content">
+      <div className="proposal-content">
 
         {/* ── Section 1: Cover ─────────────────────────────────────────── */}
-        <section className="proposal-avoid-break relative min-h-screen flex" style={{ background: "oklch(0.12 0.02 240)" }}>
+        <section className="proposal-avoid-break relative min-h-screen flex" style={{ background: DARK_NAVY }}>
+          {/* Hero image — lighter overlay so it's clearly visible */}
           {heroImg && (
-            <div className="absolute inset-0 opacity-30">
-              <img src={heroImg} alt="" className="w-full h-full object-cover" />
-              <div className="absolute inset-0" style={{ background: "linear-gradient(to right, oklch(0.12 0.02 240) 40%, transparent)" }} />
+            <div className="absolute inset-0">
+              <img src={heroImg} alt="" className="w-full h-full object-cover" style={{ opacity: 0.55 }} />
+              <div className="absolute inset-0" style={{ background: "linear-gradient(to right, rgba(5,10,20,0.92) 45%, rgba(5,10,20,0.35) 100%)" }} />
             </div>
           )}
-          <div className="relative z-10 flex flex-col justify-between w-full max-w-6xl mx-auto px-12 py-16">
+          <div className="relative z-10 flex flex-col justify-between w-full max-w-6xl mx-auto px-12 py-14">
+            {/* Top bar: logo + Google Premier badge */}
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ background: "oklch(0.42 0.12 145)" }}>
-                  <span className="text-white font-bold text-sm">N</span>
-                </div>
-                <span className="text-white font-semibold text-lg" style={{ fontFamily: "'Playfair Display', serif" }}>Nett Solutions</span>
-              </div>
+              <img src={ASSETS.nettLogo} alt="Nett Solutions" className="h-12 object-contain" style={{ filter: "brightness(1)" }} />
               <img src={ASSETS.googlePremier} alt="Google Premier Partner" className="h-16 object-contain" />
             </div>
-            <div className="max-w-2xl">
-              <p className="text-green-400 text-sm font-medium tracking-widest uppercase mb-4">Digital Advertising Proposal</p>
-              <h1 className="text-5xl font-bold text-white leading-tight mb-6" style={{ fontFamily: "'Playfair Display', serif" }}>
-                {pd.coverHeadline || `Growing ${pd.clientName} Through Strategic Digital Advertising`}
+
+            {/* Main headline block */}
+            <div className="max-w-xl">
+              <p className="text-green-400 text-xs font-semibold tracking-widest uppercase mb-4">Digital Advertising Proposal</p>
+              <h1 className="text-5xl font-bold text-white leading-tight mb-6" style={{ fontFamily: SERIF }}>
+                {copy.coverTagline || pd.coverHeadline || `Growing ${pd.clientName} Through Strategic Digital Advertising`}
               </h1>
-              <p className="text-white/70 text-xl leading-relaxed mb-10">
-                {pd.coverSubheadline || `A customized paid media strategy designed to help ${pd.clientName} reach more customers, increase revenue, and outperform the competition.`}
+              <p className="text-white/70 text-lg leading-relaxed">
+                {copy.coverSubtitle || pd.coverSubheadline || `A customized paid media strategy designed to help ${pd.clientName} reach more customers, increase revenue, and outperform the competition.`}
               </p>
-              <div className="flex items-center gap-4">
-                <div className="h-px flex-1 bg-white/20" />
-                <div className="text-right">
-                  <p className="text-white font-semibold">{pd.salesRep}</p>
-                  {pd.salesRepEmail && <p className="text-white/60 text-sm">{pd.salesRepEmail}</p>}
-                  {pd.salesRepPhone && <p className="text-white/60 text-sm">{pd.salesRepPhone}</p>}
-                </div>
+            </div>
+
+            {/* Bottom info block: Prepared For / Date / Prepared By / Website */}
+            <div className="border-t border-white/20 pt-8 grid grid-cols-4 gap-8">
+              <div>
+                <p className="text-white/40 text-xs uppercase tracking-widest mb-1">Prepared For</p>
+                <p className="text-white font-semibold">{pd.clientName}</p>
+              </div>
+              <div>
+                <p className="text-white/40 text-xs uppercase tracking-widest mb-1">Date</p>
+                <p className="text-white font-semibold">{formatDate(data.createdAt || new Date())}</p>
+              </div>
+              <div>
+                <p className="text-white/40 text-xs uppercase tracking-widest mb-1">Prepared By</p>
+                <p className="text-white font-semibold">{pd.salesRep}</p>
+                {pd.salesRepEmail && <p className="text-white/50 text-xs mt-0.5">{pd.salesRepEmail}</p>}
+              </div>
+              <div>
+                <p className="text-white/40 text-xs uppercase tracking-widest mb-1">Website</p>
+                <p className="text-white font-semibold text-sm break-all">{pd.clientWebsite}</p>
               </div>
             </div>
           </div>
         </section>
 
         {/* ── Section 2: Market Opportunity ────────────────────────────── */}
-        <section className="proposal-avoid-break py-20 px-12 max-w-6xl mx-auto">
-          <p className="text-green-600 text-xs font-semibold tracking-widest uppercase mb-3">Market Opportunity</p>
-          <h2 className="text-4xl font-bold text-gray-900 mb-6 max-w-2xl" style={{ fontFamily: "'Playfair Display', serif" }}>
-            {copy.marketHeadline || `The ${pd.industry} Market Is Growing — and the Timing Is Right`}
-          </h2>
-          {/* Stats grid from AI-generated marketStats array */}
-          {copy.marketStats && copy.marketStats.length > 0 ? (
-            <div className="grid grid-cols-4 gap-6 mb-10">
-              {copy.marketStats.map((stat: { number: string; label: string }, i: number) => (
-                <div key={i} className="p-6 rounded-2xl border border-gray-100 bg-gray-50 text-center">
-                  <p className="text-3xl font-bold mb-2" style={{ color: "oklch(0.42 0.12 145)", fontFamily: "'Playfair Display', serif" }}>{stat.number}</p>
-                  <p className="text-gray-600 text-sm leading-relaxed">{stat.label}</p>
-                </div>
-              ))}
+        <section className="proposal-avoid-break py-20">
+          <div className="max-w-6xl mx-auto px-12">
+            <p className="text-green-600 text-xs font-semibold tracking-widest uppercase mb-3">Market Opportunity</p>
+            <h2 className="text-4xl font-bold text-gray-900 mb-10 max-w-2xl" style={{ fontFamily: SERIF }}>
+              {copy.marketHeadline || `The ${pd.industry} Market Is Growing — and the Timing Is Right`}
+            </h2>
+            {/* 2-column layout: 2x2 stats grid on left, bullet insights on right */}
+            <div className="grid grid-cols-2 gap-12 items-start">
+              {/* Left: 2x2 stats grid */}
+              <div className="grid grid-cols-2 gap-4">
+                {(copy.marketStats || [
+                  { number: "—", label: "Industry Market Size" },
+                  { number: "—", label: "Online Search Share" },
+                  { number: "—", label: "Mobile Search Impact" },
+                  { number: "—", label: "PPC Conversion Lift" },
+                ]).slice(0, 4).map((stat: { number: string; label: string }, i: number) => (
+                  <div key={i} className="p-6 rounded-2xl text-center border"
+                    style={{
+                      background: i === 0 ? GREEN : "white",
+                      borderColor: i === 0 ? GREEN : "oklch(0.9 0.01 120)",
+                    }}>
+                    <p className="text-3xl font-bold mb-2" style={{ color: i === 0 ? "white" : GREEN, fontFamily: SERIF }}>{stat.number}</p>
+                    <p className="text-sm leading-relaxed" style={{ color: i === 0 ? "rgba(255,255,255,0.85)" : "oklch(0.45 0.01 120)" }}>{stat.label}</p>
+                  </div>
+                ))}
+              </div>
+              {/* Right: bullet insights + body */}
+              <div>
+                {copy.marketInsights && copy.marketInsights.length > 0 ? (
+                  <div className="space-y-4 mb-6">
+                    {copy.marketInsights.map((insight: string, i: number) => (
+                      <div key={i} className="flex items-start gap-3">
+                        <span className="mt-2 w-2.5 h-2.5 rounded-full shrink-0" style={{ background: GREEN }} />
+                        <p className="text-gray-700 leading-relaxed">{insight}</p>
+                      </div>
+                    ))}
+                  </div>
+                ) : null}
+                <p className="text-gray-600 leading-relaxed">
+                  {copy.marketIntro || `The digital advertising landscape presents a significant opportunity for ${pd.clientName}. With the right strategy and the right partner, the path to growth is clear.`}
+                </p>
+                {copy.marketSource && <p className="text-gray-400 text-xs mt-4">{copy.marketSource}</p>}
+              </div>
             </div>
-          ) : null}
-          {/* Insights list */}
-          {copy.marketInsights && copy.marketInsights.length > 0 ? (
-            <div className="space-y-2 mb-8">
-              {copy.marketInsights.map((insight: string, i: number) => (
-                <div key={i} className="flex items-start gap-3">
-                  <span className="mt-1.5 w-2 h-2 rounded-full shrink-0" style={{ background: "oklch(0.42 0.12 145)" }} />
-                  <p className="text-gray-700 text-base leading-relaxed">{insight}</p>
-                </div>
-              ))}
-            </div>
-          ) : null}
-          <p className="text-gray-600 text-lg leading-relaxed max-w-3xl">
-            {copy.marketIntro || `The digital advertising landscape presents a significant opportunity for ${pd.clientName}. With the right strategy and the right partner, the path to growth is clear.`}
-          </p>
-          {copy.marketSource && <p className="text-gray-400 text-xs mt-4">{copy.marketSource}</p>}
+          </div>
         </section>
 
         {/* ── Section 3: Goals ─────────────────────────────────────────── */}
         <section className="proposal-avoid-break py-20" style={{ background: "oklch(0.97 0.01 90)" }}>
           <div className="max-w-6xl mx-auto px-12">
-            <p className="text-green-600 text-xs font-semibold tracking-widest uppercase mb-3">Our Goals Together</p>
-            <h2 className="text-4xl font-bold text-gray-900 mb-10 max-w-2xl" style={{ fontFamily: "'Playfair Display', serif" }}>
-            {copy.goalsHeadline || `What We're Here to Accomplish for ${pd.clientName}`}
-          </h2>
-          <div className="grid grid-cols-2 gap-6">
-            {(copy.goalsList || [{ title: "Increase Revenue", body: pd.goals }]).map((g: { title: string; body?: string; description?: string }, i: number) => (
-                <div key={i} className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
-                  <div className="w-8 h-8 rounded-full flex items-center justify-center mb-4 text-white text-sm font-bold" style={{ background: "oklch(0.42 0.12 145)" }}>
-                    {i + 1}
+            <div className="grid grid-cols-2 gap-12 items-start">
+              {/* Left: prospect image */}
+              <div className="rounded-2xl overflow-hidden" style={{ minHeight: "420px" }}>
+                {heroImg ? (
+                  <img src={heroImg} alt={pd.clientName} className="w-full h-full object-cover" style={{ minHeight: "420px" }}
+                    onError={(e) => { const el = e.target as HTMLImageElement; el.parentElement!.style.background = GREEN; el.style.display = "none"; }} />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center" style={{ background: GREEN, minHeight: "420px" }}>
+                    <span className="text-white/60 text-xl font-medium">{pd.clientName}</span>
                   </div>
-                  <h3 className="font-semibold text-gray-900 mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>{g.title}</h3>
-                  <p className="text-gray-500 text-sm leading-relaxed">{g.body || g.description}</p>
+                )}
+              </div>
+              {/* Right: numbered goals */}
+              <div>
+                <p className="text-green-600 text-xs font-semibold tracking-widest uppercase mb-3">Our Goals Together</p>
+                <h2 className="text-4xl font-bold text-gray-900 mb-8" style={{ fontFamily: SERIF }}>
+                  {copy.goalsHeadline || `What We're Here to Accomplish for ${pd.clientName}`}
+                </h2>
+                <div className="space-y-5">
+                  {(copy.goalsList || [{ title: "Increase Revenue", body: pd.goals }]).map((g: { title: string; body?: string; description?: string }, i: number) => (
+                    <div key={i} className="flex gap-4 items-start">
+                      <div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 text-white text-sm font-bold mt-0.5" style={{ background: GREEN }}>
+                        {i + 1}
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-gray-900 mb-1" style={{ fontFamily: SERIF }}>{g.title}</h3>
+                        <p className="text-gray-500 text-sm leading-relaxed">{g.body || g.description}</p>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              ))}
+              </div>
             </div>
           </div>
         </section>
 
         {/* ── Section 4: Campaign Strategy ─────────────────────────────── */}
-        <section className="proposal-avoid-break py-20">
-          <div className="max-w-6xl mx-auto px-12">
-            <p className="text-green-600 text-xs font-semibold tracking-widest uppercase mb-3">Campaign Strategy</p>
-            <h2 className="text-4xl font-bold text-gray-900 mb-4" style={{ fontFamily: "'Playfair Display', serif" }}>
-              {copy.campaignHeadline || "The Right Channels, The Right Message"}
-            </h2>
-            <p className="text-gray-500 mb-10 max-w-2xl">{copy.campaignIntro || `Here's how we'll reach ${pd.clientName}'s ideal customers across the channels that matter most.`}</p>
-
-            {/* Layout B: Side image + card list */}
-            <div className="grid grid-cols-5 gap-8 items-start">
-              <div className="col-span-2 rounded-2xl overflow-hidden" style={{ minHeight: "400px" }}>
-                {imgs.campaign ? (
-                  <img src={imgs.campaign} alt={pd.clientName} className="w-full h-full object-cover" style={{ minHeight: "400px" }}
-                    onError={(e) => { const el = e.target as HTMLImageElement; el.style.display='none'; }} />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center" style={{ background: "oklch(0.12 0.02 240)", minHeight: "400px" }}>
-                    <span className="text-white/30 text-lg font-medium">{pd.clientName}</span>
-                  </div>
-                )}
-              </div>
-              <div className="col-span-3 space-y-4">
+        <section className="proposal-avoid-break" style={{ background: DARK_NAVY }}>
+          <div className="grid grid-cols-5" style={{ minHeight: "560px" }}>
+            {/* Left: full-height image */}
+            <div className="col-span-2 relative overflow-hidden">
+              {imgs.campaign ? (
+                <img src={imgs.campaign} alt={pd.clientName} className="absolute inset-0 w-full h-full object-cover"
+                  onError={(e) => { const el = e.target as HTMLImageElement; el.style.display = "none"; }} />
+              ) : (
+                <div className="absolute inset-0 flex items-center justify-center" style={{ background: "oklch(0.18 0.04 240)" }}>
+                  <span className="text-white/20 text-lg">{pd.clientName}</span>
+                </div>
+              )}
+              <div className="absolute inset-0" style={{ background: "linear-gradient(to right, transparent 70%, rgba(5,10,20,0.6) 100%)" }} />
+            </div>
+            {/* Right: channel rows */}
+            <div className="col-span-3 px-10 py-14 flex flex-col justify-center">
+              <p className="text-green-400 text-xs font-semibold tracking-widest uppercase mb-3">Campaign Strategy</p>
+              <h2 className="text-4xl font-bold text-white mb-3" style={{ fontFamily: SERIF }}>
+                {copy.campaignHeadline || "The Right Channels, The Right Message"}
+              </h2>
+              <p className="text-white/50 mb-8 text-sm leading-relaxed max-w-md">
+                {copy.campaignIntro || `Here's how we'll reach ${pd.clientName}'s ideal customers across the channels that matter most.`}
+              </p>
+              <div className="space-y-3">
                 {pd.channels.map((ch, i) => (
-                  <div key={i} className="flex gap-4 p-5 rounded-xl border border-gray-100 bg-white shadow-sm">
-                    <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0" style={{ background: "oklch(0.42 0.12 145)" }}>
-                      <ChannelLogo name={ch.name} />
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center justify-between mb-1">
-                        <h3 className="font-semibold text-gray-900 text-sm">{ch.name}</h3>
-                        <span className="text-xs font-semibold px-2 py-0.5 rounded-full" style={{ background: "oklch(0.95 0.04 145)", color: "oklch(0.35 0.12 145)" }}>
-                          {formatCurrency(ch.budget)}/mo
-                        </span>
+                  <div key={i} className="flex gap-4 items-start p-4 rounded-xl" style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.08)" }}>
+                    <div className="flex items-center justify-between w-full gap-4">
+                      <div className="flex-1">
+                        <div className="flex items-center justify-between mb-1">
+                          <h3 className="font-semibold text-white text-sm">{ch.name}</h3>
+                          <span className="text-xs font-semibold px-2 py-0.5 rounded-full" style={{ background: "rgba(255,255,255,0.12)", color: "oklch(0.75 0.12 145)" }}>
+                            {formatCurrency(ch.budget)}/mo
+                          </span>
+                        </div>
+                        <p className="text-white/40 text-xs leading-relaxed">
+                          {copy.campaignDescriptions?.[ch.name] || `Strategic ${ch.name} campaigns targeting ${pd.clientName}'s ideal customers with compelling ads and optimized bidding.`}
+                        </p>
                       </div>
-                      <p className="text-gray-500 text-xs leading-relaxed">
-                        {copy.campaignDescriptions?.[ch.name] || pd.channelDescriptions?.[ch.name] || `Strategic ${ch.name} campaigns targeting ${pd.clientName}'s ideal customers with compelling ads and optimized bidding.`}
-                      </p>
                     </div>
                   </div>
                 ))}
@@ -449,35 +488,43 @@ export default function ProposalView() {
         <section className="proposal-avoid-break py-20" style={{ background: "oklch(0.97 0.01 90)" }}>
           <div className="max-w-6xl mx-auto px-12">
             <p className="text-green-600 text-xs font-semibold tracking-widest uppercase mb-3">Our Process</p>
-            <h2 className="text-4xl font-bold text-gray-900 mb-10 max-w-2xl" style={{ fontFamily: "'Playfair Display', serif" }}>
+            <h2 className="text-4xl font-bold text-gray-900 mb-12 max-w-2xl" style={{ fontFamily: SERIF }}>
               {copy.processHeadline || "How We Turn Ad Spend Into Real Results"}
             </h2>
-            <div className="grid grid-cols-3 gap-6 mb-10">
+            {/* Steps with connecting lines */}
+            <div className="relative flex gap-0 mb-12">
               {(copy.processSteps || [
                 { number: "01", title: "Discovery & Strategy", body: "We deep-dive into your business, competitors, and target audience to build a data-backed strategy from day one." },
                 { number: "02", title: "Build & Launch", body: "Our team builds every campaign with precision — from keyword research and ad copy to audience targeting and bid strategy." },
                 { number: "03", title: "Optimize & Scale", body: "We monitor performance daily, make data-driven adjustments, and scale what's working to maximize your return." },
-              ]).slice(0, 3).map((s: { number?: string; step?: string; title: string; body?: string; description?: string }, i: number) => (
-                <div key={i} className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
-                  <span className="text-4xl font-bold" style={{ color: "oklch(0.9 0.04 145)", fontFamily: "'Playfair Display', serif" }}>{s.number || s.step}</span>
-                  <h3 className="font-semibold text-gray-900 mt-3 mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>{s.title}</h3>
-                  <p className="text-gray-500 text-sm leading-relaxed">{s.body || s.description}</p>
+              ]).slice(0, 3).map((s: { number?: string; step?: string; title: string; body?: string; description?: string }, i: number, arr: any[]) => (
+                <div key={i} className="flex-1 relative">
+                  {/* Connecting line */}
+                  {i < arr.length - 1 && (
+                    <div className="absolute top-6 left-1/2 w-full h-0.5" style={{ background: "oklch(0.88 0.04 145)", zIndex: 0 }} />
+                  )}
+                  <div className="relative z-10 flex flex-col items-center text-center px-6">
+                    {/* Circle number */}
+                    <div className="w-12 h-12 rounded-full flex items-center justify-center mb-4 text-white font-bold text-sm" style={{ background: GREEN }}>
+                      {s.number || s.step}
+                    </div>
+                    <h3 className="font-semibold text-gray-900 mb-2" style={{ fontFamily: SERIF }}>{s.title}</h3>
+                    <p className="text-gray-500 text-sm leading-relaxed">{s.body || s.description}</p>
+                  </div>
                 </div>
               ))}
             </div>
-            {/* Image strip */}
-            <div className="grid grid-cols-3 gap-4 rounded-2xl overflow-hidden">
-              {[imgs.process1 || imgs.hero, imgs.process2 || imgs.campaign, imgs.process3 || imgs.hero].map((img, i) => (
-                img ? (
-                  <div key={i} className="aspect-video overflow-hidden rounded-xl">
+            {/* Image ribbon — no gaps between images */}
+            {processImgs.length > 0 && (
+              <div className="flex rounded-2xl overflow-hidden" style={{ height: "220px" }}>
+                {processImgs.map((img, i) => (
+                  <div key={i} className="flex-1 overflow-hidden">
                     <img src={img} alt="" className="w-full h-full object-cover"
-                      onError={(e) => { const el = e.target as HTMLImageElement; el.parentElement!.style.background='oklch(0.85 0.04 145)'; el.style.display='none'; }} />
+                      onError={(e) => { const el = e.target as HTMLImageElement; el.parentElement!.style.background = "oklch(0.85 0.04 145)"; el.style.display = "none"; }} />
                   </div>
-                ) : (
-                  <div key={i} className="aspect-video rounded-xl" style={{ background: "oklch(0.85 0.04 145)" }} />
-                )
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </div>
         </section>
 
@@ -485,47 +532,53 @@ export default function ProposalView() {
         <section className="proposal-avoid-break py-20">
           <div className="max-w-6xl mx-auto px-12">
             <p className="text-green-600 text-xs font-semibold tracking-widest uppercase mb-3">Your Investment</p>
-            <h2 className="text-4xl font-bold text-gray-900 mb-4" style={{ fontFamily: "'Playfair Display', serif" }}>
+            <h2 className="text-4xl font-bold text-gray-900 mb-4" style={{ fontFamily: SERIF }}>
               Transparent Pricing, No Surprises
             </h2>
             <p className="text-gray-500 mb-10 max-w-2xl">Here's a complete breakdown of your monthly investment and how our management fee is calculated based on your total ad spend.</p>
 
             <div className="grid grid-cols-2 gap-10">
+              {/* Left: spend breakdown + fee summary */}
               <div>
-                <h3 className="font-semibold text-gray-900 mb-4" style={{ fontFamily: "'Playfair Display', serif" }}>Monthly Ad Spend Breakdown</h3>
-                <div className="space-y-3 mb-6">
+                <h3 className="font-semibold text-gray-900 mb-4" style={{ fontFamily: SERIF }}>Monthly Ad Spend Breakdown</h3>
+                <div className="space-y-0 mb-6 border border-gray-200 rounded-xl overflow-hidden">
                   {pd.channels.map((ch, i) => (
-                    <div key={i} className="flex items-center justify-between py-2 border-b border-gray-100">
-                      <div className="flex items-center gap-3">
-                        <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ background: "oklch(0.42 0.12 145)" }}>
-                          <ChannelLogo name={ch.name} />
-                        </div>
-                        <span className="text-gray-700 text-sm">{ch.name}</span>
-                      </div>
+                    <div key={i} className="flex items-center justify-between px-5 py-3 border-b border-gray-100 last:border-0" style={{ background: i % 2 === 0 ? "white" : "oklch(0.98 0.005 120)" }}>
+                      <span className="text-gray-700 text-sm">{ch.name}</span>
                       <span className="font-medium text-gray-900 text-sm">{formatCurrency(ch.budget)}/mo</span>
                     </div>
                   ))}
-                  <div className="flex items-center justify-between py-2 pt-3">
-                    <span className="font-semibold text-gray-900">Total Monthly Ad Spend</span>
-                    <span className="font-bold text-gray-900 text-lg">{formatCurrency(pd.totalMonthlySpend)}/mo</span>
+                  <div className="flex items-center justify-between px-5 py-3 font-semibold" style={{ background: "oklch(0.96 0.01 120)" }}>
+                    <span className="text-gray-900">Total Monthly Ad Spend</span>
+                    <span className="text-gray-900 text-lg">{formatCurrency(pd.totalMonthlySpend)}/mo</span>
                   </div>
                 </div>
-                <div className="p-5 rounded-xl border-2 mb-4" style={{ borderColor: "oklch(0.42 0.12 145)", background: "oklch(0.97 0.03 145)" }}>
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="font-semibold text-gray-900">Management Fee ({mgmtFee.percent})</span>
-                    <span className="font-bold text-xl" style={{ color: "oklch(0.35 0.12 145)" }}>{formatCurrency(mgmtFee.fee)}/mo</span>
+
+                {/* Fee summary blocks — side by side */}
+                <div className="grid grid-cols-2 gap-4 mb-4">
+                  <div className="p-5 rounded-xl border border-gray-200 bg-gray-50">
+                    <p className="text-gray-500 text-xs mb-1">Management Fee ({mgmtFee.percent})</p>
+                    <p className="font-bold text-2xl" style={{ color: GREEN }}>{formatCurrency(mgmtFee.fee)}<span className="text-sm font-normal text-gray-400">/mo</span></p>
+                    <p className="text-gray-400 text-xs mt-1">Based on {formatCurrency(pd.totalMonthlySpend)}/mo spend</p>
                   </div>
-                  <p className="text-gray-500 text-xs">Based on total monthly ad spend of {formatCurrency(pd.totalMonthlySpend)}</p>
+                  {pd.setupFee > 0 && (
+                    <div className="p-5 rounded-xl border border-gray-200 bg-gray-50">
+                      <p className="text-gray-500 text-xs mb-1">One-Time Setup Fee</p>
+                      <p className="font-bold text-2xl text-gray-900">{formatCurrency(pd.setupFee)}</p>
+                      <p className="text-gray-400 text-xs mt-1">Charged once at campaign launch</p>
+                    </div>
+                  )}
                 </div>
-                {pd.setupFee > 0 && (
-                  <div className="flex items-center justify-between py-3 border-t border-gray-200">
-                    <span className="text-gray-700">One-Time Setup Fee</span>
-                    <span className="font-semibold text-gray-900">{formatCurrency(pd.setupFee)}</span>
-                  </div>
-                )}
+
+                {/* Sliding scale disclaimer */}
+                <p className="text-gray-400 text-xs leading-relaxed italic">
+                  Management fees are on a sliding scale based on monthly spend. We will always notify you and get your approval before making any budget changes.
+                </p>
               </div>
+
+              {/* Right: fee schedule table */}
               <div>
-                <h3 className="font-semibold text-gray-900 mb-4" style={{ fontFamily: "'Playfair Display', serif" }}>
+                <h3 className="font-semibold text-gray-900 mb-4" style={{ fontFamily: SERIF }}>
                   {pd.isEcommerce ? "Ecommerce" : "Standard"} Fee Schedule
                 </h3>
                 <FeeTable totalSpend={pd.totalMonthlySpend} isEcommerce={pd.isEcommerce} />
@@ -538,33 +591,38 @@ export default function ProposalView() {
         <section className="proposal-avoid-break py-20" style={{ background: "oklch(0.97 0.01 90)" }}>
           <div className="max-w-6xl mx-auto px-12">
             <p className="text-green-600 text-xs font-semibold tracking-widest uppercase mb-3">Meet the Team</p>
-            <h2 className="text-4xl font-bold text-gray-900 mb-4" style={{ fontFamily: "'Playfair Display', serif" }}>
+            <h2 className="text-4xl font-bold text-gray-900 mb-10" style={{ fontFamily: SERIF }}>
               The People Behind Your Results
             </h2>
-            <p className="text-gray-500 mb-10 max-w-2xl italic" style={{ fontFamily: "'Playfair Display', serif" }}>
-              "As we begin this journey to help {pd.clientName} grow, don't be surprised if we end up learning about each other's pets, families and share a lot of laughs along the way."
-            </p>
-            <div className="grid grid-cols-3 gap-6">
+            {/* Open grid — no boxes, just photos + names */}
+            <div className="grid grid-cols-6 gap-6 mb-12">
               {TEAM.map((member, i) => (
-                <div key={i} className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm text-center">
-                  <div className="w-20 h-20 rounded-full overflow-hidden mx-auto mb-4 border-2" style={{ borderColor: "oklch(0.42 0.12 145)" }}>
+                <div key={i} className="text-center">
+                  <div className="w-20 h-20 rounded-full overflow-hidden mx-auto mb-3 border-2" style={{ borderColor: GREEN }}>
                     <img src={member.img} alt={member.name} className="w-full h-full object-cover" />
                   </div>
-                  <h3 className="font-semibold text-gray-900 mb-1" style={{ fontFamily: "'Playfair Display', serif" }}>{member.name}</h3>
-                  <p className="text-gray-500 text-xs">{member.title}</p>
+                  <h3 className="font-semibold text-gray-900 text-sm mb-0.5" style={{ fontFamily: SERIF }}>{member.name}</h3>
+                  <p className="text-xs font-medium" style={{ color: GREEN }}>{member.title}</p>
                 </div>
               ))}
+            </div>
+            {/* Quote box at the bottom */}
+            <div className="rounded-2xl p-8 border-l-4" style={{ background: "white", borderLeftColor: GREEN, boxShadow: "0 2px 16px rgba(0,0,0,0.06)" }}>
+              <p className="text-gray-700 text-lg italic leading-relaxed" style={{ fontFamily: SERIF }}>
+                "{copy.teamQuote || `As we begin this journey to help ${pd.clientName} grow, don't be surprised if we end up learning about each other's pets, families and share a lot of laughs along the way.`}"
+              </p>
+              <p className="text-gray-400 text-sm mt-3 font-medium">— Joe Mounsey, Founder & CEO</p>
             </div>
           </div>
         </section>
 
         {/* ── Section 8: Why Nett Solutions ────────────────────────────── */}
-        <section className="proposal-avoid-break py-20" style={{ background: "oklch(0.12 0.02 240)" }}>
+        <section className="proposal-avoid-break py-20" style={{ background: DARK_NAVY }}>
           <div className="max-w-6xl mx-auto px-12">
             <div className="grid grid-cols-2 gap-16 items-start">
               <div>
                 <p className="text-green-400 text-xs font-semibold tracking-widest uppercase mb-4">Why Nett Solutions</p>
-                <h2 className="text-4xl font-bold text-white leading-tight mb-6" style={{ fontFamily: "'Playfair Display', serif" }}>
+                <h2 className="text-4xl font-bold text-white leading-tight mb-6" style={{ fontFamily: SERIF }}>
                   {copy.whyHeadline || "We Don't Just Run Ads. We Build Growth Engines."}
                 </h2>
                 <p className="text-white/60 leading-relaxed">
@@ -578,7 +636,7 @@ export default function ProposalView() {
                   { title: "Dedicated Team", body: "You get a real team, not a rotating cast of account managers. We know your business." },
                   { title: "Performance-Focused", body: "We're obsessed with ROI. Every decision we make is driven by data, not guesswork." },
                 ]).map((p: { title: string; body?: string; description?: string }, i: number) => (
-                  <div key={i} className="border-l-2 pl-5 py-1" style={{ borderColor: "oklch(0.42 0.12 145)" }}>
+                  <div key={i} className="border-l-2 pl-5 py-1" style={{ borderColor: GREEN }}>
                     <h3 className="text-white font-semibold mb-1 text-sm">{p.title}</h3>
                     <p className="text-white/50 text-sm leading-relaxed">{p.body || p.description}</p>
                   </div>
@@ -589,36 +647,46 @@ export default function ProposalView() {
         </section>
 
         {/* ── Section 9: CTA ────────────────────────────────────────────── */}
-        <section className="proposal-avoid-break py-20" style={{ background: "oklch(0.18 0.04 240)" }}>
-          <div className="max-w-6xl mx-auto px-12 text-center">
-            <p className="text-green-400 text-xs font-semibold tracking-widest uppercase mb-4">Ready to Grow?</p>
-            <h2 className="text-4xl font-bold text-white mb-6 max-w-2xl mx-auto" style={{ fontFamily: "'Playfair Display', serif" }}>
-              {copy.ctaHeadline || `Let's Build Something Great Together, ${pd.clientName}`}
-            </h2>
-            <p className="text-white/60 mb-10 max-w-xl mx-auto leading-relaxed">
-              {copy.ctaBody || `We're ready to put our expertise to work for you. Reach out to ${pd.salesRep} to schedule your strategy call and take the first step toward measurable growth.`}
-            </p>
-            <div className="inline-flex flex-col items-center gap-1 mb-14">
-              <p className="text-white font-semibold text-lg">{pd.salesRep}</p>
-              {pd.salesRepEmail && <p className="text-green-400">{pd.salesRepEmail}</p>}
-              {pd.salesRepPhone && <p className="text-white/60">{pd.salesRepPhone}</p>}
+        <section className="proposal-avoid-break" style={{ background: "oklch(0.18 0.04 240)" }}>
+          <div className="grid grid-cols-2" style={{ minHeight: "480px" }}>
+            {/* Left: image */}
+            <div className="relative overflow-hidden">
+              {heroImg ? (
+                <img src={heroImg} alt={pd.clientName} className="absolute inset-0 w-full h-full object-cover" style={{ opacity: 0.7 }}
+                  onError={(e) => { const el = e.target as HTMLImageElement; el.style.display = "none"; }} />
+              ) : null}
+              <div className="absolute inset-0" style={{ background: "linear-gradient(to right, transparent 60%, rgba(10,15,30,0.7) 100%)" }} />
             </div>
-
-            {/* Accreditation Badges */}
-            <div className="border-t border-white/10 pt-10">
-              <p className="text-white/30 text-xs uppercase tracking-widest mb-6">Our Credentials & Partnerships</p>
-              <div className="flex items-center justify-center gap-8 flex-wrap">
-                <img src={ASSETS.googlePremier} alt="Google Premier Partner" className="h-12 object-contain" />
-                <div className="bg-white rounded-lg p-2 flex items-center justify-center h-12">
-                  <img src={ASSETS.metaBadge} alt="Meta Business Partner" className="h-8 object-contain" />
+            {/* Right: CTA content */}
+            <div className="px-12 py-16 flex flex-col justify-center">
+              <p className="text-green-400 text-xs font-semibold tracking-widest uppercase mb-4">Ready to Grow?</p>
+              <h2 className="text-4xl font-bold text-white mb-6" style={{ fontFamily: SERIF }}>
+                {copy.ctaHeadline || `Let's Build Something Great Together, ${pd.clientName}`}
+              </h2>
+              <p className="text-white/60 mb-8 leading-relaxed">
+                {copy.ctaBody || `We're ready to put our expertise to work for you. Reach out to ${pd.salesRep} to schedule your strategy call and take the first step toward measurable growth.`}
+              </p>
+              <div className="flex flex-col gap-0.5 mb-10">
+                <p className="text-white font-semibold text-lg">{pd.salesRep}</p>
+                {pd.salesRepEmail && <p className="text-green-400 text-sm">{pd.salesRepEmail}</p>}
+                {pd.salesRepPhone && <p className="text-white/50 text-sm">{pd.salesRepPhone}</p>}
+              </div>
+              {/* Accreditation Badges */}
+              <div className="border-t border-white/10 pt-8">
+                <p className="text-white/30 text-xs uppercase tracking-widest mb-5">Our Credentials & Partnerships</p>
+                <div className="flex items-center gap-4 flex-wrap">
+                  <img src={ASSETS.googlePremier} alt="Google Premier Partner" className="h-10 object-contain" />
+                  <div className="bg-white rounded-lg p-1.5 flex items-center justify-center h-10">
+                    <img src={ASSETS.metaBadge} alt="Meta Business Partner" className="h-6 object-contain" />
+                  </div>
+                  <div className="bg-white rounded-lg p-1.5 flex items-center justify-center h-10">
+                    <img src={ASSETS.tiktokBadge} alt="TikTok for Business" className="h-6 object-contain" />
+                  </div>
+                  <img src={ASSETS.bing} alt="Bing Partner" className="h-10 object-contain" />
+                  <img src={ASSETS.bbb} alt="BBB Accredited" className="h-10 object-contain" />
+                  <img src={ASSETS.yelp} alt="Yelp Advertising Partner" className="h-10 object-contain" />
+                  <img src={ASSETS.linkedin} alt="LinkedIn Partner" className="h-10 object-contain" />
                 </div>
-                <div className="bg-white rounded-lg p-2 flex items-center justify-center h-12">
-                  <img src={ASSETS.tiktokBadge} alt="TikTok for Business" className="h-8 object-contain" />
-                </div>
-                <img src={ASSETS.bing} alt="Bing Partner" className="h-12 object-contain" />
-                <img src={ASSETS.bbb} alt="BBB Accredited" className="h-12 object-contain" />
-                <img src={ASSETS.yelp} alt="Yelp Advertising Partner" className="h-12 object-contain" />
-                <img src={ASSETS.linkedin} alt="LinkedIn Partner" className="h-12 object-contain" />
               </div>
             </div>
           </div>

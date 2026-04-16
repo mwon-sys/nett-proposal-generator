@@ -51,5 +51,16 @@
 - [x] Fix CTA section rendering (copy.ctaHeadline, copy.ctaBody)
 - [x] Fix team photos CDN URLs
 - [x] Fix Meta/TikTok badge rendering
-- [ ] Save checkpoint
-- [ ] Deliver to Mike
+- [x] Save checkpoint (v97034bc1)
+- [x] Deliver to Mike
+
+## Phase 7: Design Restoration (Mike's Feedback)
+- [x] Upload Nett Solutions white logo (ppclogo_white.png) to CDN
+- [x] Cover: Add Nett logo (white), reduce dark overlay so image is more visible, add Prepared For / Date / Prepared By / Website info block
+- [x] Market Opportunity: 2x2 grid on left for 4 stats (one highlighted green), bullet points on right with green bullet icons
+- [x] Goals: Image on left (from prospect site), 4 numbered goals on right
+- [x] Campaign Strategy: Dark background, full-height image on left, ad channel rows with icons on right
+- [x] Our Process: Numbered steps with connecting lines, 3-image ribbon at bottom (no gaps between images)
+- [x] Investment: Restore original layout - management fee block + one-time setup block side by side, add sliding scale disclaimer text, remove green box style
+- [x] Meet the Team: Remove individual rectangular boxes, show team in open grid layout, quote in its own box at bottom, titles in green
+- [x] CTA (Ready to Get Started): Add prospect image on the section
