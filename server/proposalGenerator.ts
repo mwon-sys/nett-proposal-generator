@@ -18,6 +18,7 @@ export interface ProposalInput {
   salesRep: string;
   salesRepEmail?: string;
   salesRepPhone?: string;
+  uploadedImages?: string[]; // Optional S3 URLs to use instead of scraped images
 }
 
 export interface ProposalData {
@@ -85,17 +86,27 @@ export async function generateProposal(input: ProposalInput): Promise<ProposalDa
     return { label: rangeLabel, fee: t.fee, isActive };
   });
 
-  // Scrape website images
+  // Scrape website images (used as fallback if no uploaded images)
   const scraped = await scrapeWebsiteImages(input.clientWebsite);
-  const imgs = scraped.images;
+  const scrapedImgs = scraped.images;
+
+  // Use uploaded images first, fall back to scraped images for any missing slots
+  const uploaded = input.uploadedImages ?? [];
+  const get = (uploadedIdx: number, ...scrapedFallbacks: number[]) => {
+    if (uploaded[uploadedIdx]) return uploaded[uploadedIdx];
+    for (const fi of scrapedFallbacks) {
+      if (scrapedImgs[fi]) return scrapedImgs[fi];
+    }
+    return null;
+  };
 
   const images = {
-    hero: imgs[0] || null,
-    campaign: imgs[1] || imgs[0] || null,
-    process1: imgs[2] || imgs[0] || null,
-    process2: imgs[3] || imgs[1] || null,
-    process3: imgs[4] || imgs[2] || null,
-    extras: imgs.slice(5),
+    hero:      get(0, 0),
+    campaign:  get(1, 1, 0),
+    process1:  get(2, 2, 0),
+    process2:  get(3, 3, 1),
+    process3:  get(4, 4, 2),
+    extras:    uploaded.slice(5).length > 0 ? uploaded.slice(5) : scrapedImgs.slice(5),
   };
 
   // Generate AI copy

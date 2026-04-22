@@ -7,6 +7,7 @@ import { publicProcedure, router } from "./_core/trpc";
 import { createProposal, getProposalBySlug, listProposals, updateProposalData } from "./db";
 import { generateProposal } from "./proposalGenerator";
 import { APP_PASSWORD } from "../shared/constants";
+import { storagePut } from "./storage";
 
 const channelSchema = z.object({
   name: z.string(),
@@ -32,6 +33,22 @@ export const appRouter = router({
         return { valid: input.password === APP_PASSWORD };
       }),
 
+    uploadImage: publicProcedure
+      .input(z.object({
+        base64: z.string(), // data:image/...;base64,...
+        filename: z.string(),
+      }))
+      .mutation(async ({ input }) => {
+        const matches = input.base64.match(/^data:([^;]+);base64,(.+)$/);
+        if (!matches) throw new Error("Invalid base64 image");
+        const [, mimeType, b64data] = matches;
+        const buffer = Buffer.from(b64data, "base64");
+        const ext = input.filename.split(".").pop() ?? "jpg";
+        const key = `proposal-uploads/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+        const { url } = await storagePut(key, buffer, mimeType);
+        return { url };
+      }),
+
     create: publicProcedure
       .input(z.object({
         clientName: z.string().min(1),
@@ -44,6 +61,7 @@ export const appRouter = router({
         salesRep: z.string().min(1),
         salesRepEmail: z.string().optional(),
         salesRepPhone: z.string().optional(),
+        uploadedImages: z.array(z.string()).optional(), // S3 URLs from uploadImage
       }))
       .mutation(async ({ input }) => {
         const slug = nanoid(10);
@@ -67,7 +85,7 @@ export const appRouter = router({
           status: "generating",
         });
 
-        generateProposal(input)
+        generateProposal({ ...input, uploadedImages: input.uploadedImages ?? [] })
           .then(data => updateProposalData(slug, data, "ready"))
           .catch(err => {
             console.error("[Generator] Failed:", err);

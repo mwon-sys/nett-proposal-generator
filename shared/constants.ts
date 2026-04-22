@@ -35,14 +35,13 @@ export const SALES_REPS = TEAM_MEMBERS.map(m => m.name);
 export const ECOMMERCE_TIERS = [
   { min: 1,      max: 2999,   fee: "$600 flat",  percent: "flat",  flatAmount: 600 },
   { min: 3000,   max: 7499,   fee: "20%",        percent: "20%",   flatAmount: null },
-  { min: 7500,   max: 11999,  fee: "15%",        percent: "15%",   flatAmount: null },
-  { min: 12000,  max: 19999,  fee: "14%",        percent: "14%",   flatAmount: null },
-  { min: 20000,  max: 29999,  fee: "13%",        percent: "13%",   flatAmount: null },
-  { min: 30000,  max: 44999,  fee: "12%",        percent: "12%",   flatAmount: null },
-  { min: 45000,  max: 59999,  fee: "11%",        percent: "11%",   flatAmount: null },
-  { min: 60000,  max: 74999,  fee: "10%",        percent: "10%",   flatAmount: null },
-  { min: 75000,  max: 99999,  fee: "9%",         percent: "9%",    flatAmount: null },
-  { min: 100000, max: Infinity, fee: "Custom",   percent: "Custom", flatAmount: null },
+  { min: 7500,   max: 11999,  fee: "18%",        percent: "18%",   flatAmount: null },
+  { min: 12000,  max: 19999,  fee: "17%",        percent: "17%",   flatAmount: null },
+  { min: 20000,  max: 29999,  fee: "16%",        percent: "16%",   flatAmount: null },
+  { min: 30000,  max: 44999,  fee: "15%",        percent: "15%",   flatAmount: null },
+  { min: 45000,  max: 59999,  fee: "14%",        percent: "14%",   flatAmount: null },
+  { min: 60000,  max: 74999,  fee: "13%",        percent: "13%",   flatAmount: null },
+  { min: 75000,  max: 100000, fee: "12%",        percent: "12%",   flatAmount: null },
 ];
 
 export const NON_ECOMMERCE_TIERS = [

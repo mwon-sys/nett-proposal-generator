@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
-import { Plus, Trash2, Lock, Loader2, ChevronRight, LayoutDashboard } from "lucide-react";
+import { Plus, Trash2, Lock, Loader2, ChevronRight, LayoutDashboard, Upload, X, ImageIcon } from "lucide-react";
 
 const SALES_REPS = ["Joe Mounsey", "Ally V.", "Connor", "Mike Won", "Brandon", "Sean"];
 const AD_CHANNELS = ["Google Search","Google Performance Max","Google Maps","Google Display","YouTube","Meta Ads","TikTok Ads","Bing/Microsoft Ads","LinkedIn Ads","Pinterest Ads"];
@@ -30,8 +30,40 @@ export default function Home() {
   const [salesRepEmail, setSalesRepEmail] = useState("");
   const [salesRepPhone, setSalesRepPhone] = useState("");
 
+  const [uploadedImages, setUploadedImages] = useState<{ url: string; preview: string; name: string }[]>([]);
+  const [uploadingCount, setUploadingCount] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+
   const verifyMutation = trpc.proposal.verifyPassword.useMutation();
   const createMutation = trpc.proposal.create.useMutation();
+  const uploadImageMutation = trpc.proposal.uploadImage.useMutation();
+
+  const handleImageFiles = async (files: FileList | null) => {
+    if (!files) return;
+    const remaining = 6 - uploadedImages.length;
+    const toProcess = Array.from(files).slice(0, remaining);
+    if (toProcess.length === 0) { toast.error("Maximum 6 images allowed"); return; }
+    setUploadingCount(prev => prev + toProcess.length);
+    for (const file of toProcess) {
+      if (!file.type.startsWith("image/")) { toast.error(`${file.name} is not an image`); setUploadingCount(prev => prev - 1); continue; }
+      if (file.size > 10 * 1024 * 1024) { toast.error(`${file.name} exceeds 10MB limit`); setUploadingCount(prev => prev - 1); continue; }
+      const preview = URL.createObjectURL(file);
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        try {
+          const base64 = e.target?.result as string;
+          const { url } = await uploadImageMutation.mutateAsync({ base64, filename: file.name });
+          setUploadedImages(prev => [...prev, { url, preview, name: file.name }]);
+        } catch { toast.error(`Failed to upload ${file.name}`); }
+        finally { setUploadingCount(prev => prev - 1); }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const removeImage = (idx: number) => {
+    setUploadedImages(prev => prev.filter((_, i) => i !== idx));
+  };
 
   useEffect(() => {
     const stored = sessionStorage.getItem(SESSION_KEY);
@@ -57,7 +89,7 @@ export default function Home() {
     if (!salesRep) { toast.error("Please select a sales rep"); return; }
     if (channels.some(c => !c.name || c.budget <= 0)) { toast.error("All ad channels need a name and budget > $0"); return; }
     try {
-      const result = await createMutation.mutateAsync({ clientName, clientWebsite, industry, isEcommerce, goals, channels, setupFee, salesRep, salesRepEmail, salesRepPhone });
+      const result = await createMutation.mutateAsync({ clientName, clientWebsite, industry, isEcommerce, goals, channels, setupFee, salesRep, salesRepEmail, salesRepPhone, uploadedImages: uploadedImages.map(i => i.url) });
       navigate("/proposal/" + result.slug);
     } catch { toast.error("Failed to start proposal generation. Please try again."); }
   };
@@ -203,7 +235,59 @@ export default function Home() {
             </div>
           </section>
 
-          <Button type="submit" size="lg" className="w-full h-14 text-base font-semibold gap-2" style={{ background: "oklch(0.12 0.02 240)" }} disabled={createMutation.isPending}>
+          <section className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
+            <div className="mb-6">
+              <h2 className="text-lg font-semibold text-gray-900" style={{ fontFamily: "'Playfair Display', serif" }}>Photos <span className="text-gray-400 font-normal text-sm">(Optional)</span></h2>
+              <p className="text-gray-500 text-sm mt-1">Upload up to 6 photos to use in the proposal. If left blank, images will be pulled automatically from the client's website.</p>
+              <p className="text-gray-400 text-xs mt-1">Slots: Cover · Goals · Campaign · Process 1 · Process 2 · Process 3</p>
+            </div>
+
+            {/* Upload drop zone */}
+            {uploadedImages.length < 6 && (
+              <label
+                className={`flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-xl cursor-pointer transition-colors mb-4 ${
+                  isDragging ? "border-green-400 bg-green-50" : "border-gray-200 hover:border-gray-300 hover:bg-gray-50"
+                }`}
+                onDragOver={e => { e.preventDefault(); setIsDragging(true); }}
+                onDragLeave={() => setIsDragging(false)}
+                onDrop={e => { e.preventDefault(); setIsDragging(false); handleImageFiles(e.dataTransfer.files); }}
+              >
+                <input type="file" accept="image/*" multiple className="hidden" onChange={e => handleImageFiles(e.target.files)} />
+                {uploadingCount > 0 ? (
+                  <><Loader2 className="w-6 h-6 animate-spin mb-2" style={{ color: "oklch(0.42 0.12 145)" }} /><span className="text-sm text-gray-500">Uploading {uploadingCount} image{uploadingCount > 1 ? 's' : ''}...</span></>
+                ) : (
+                  <><Upload className="w-6 h-6 mb-2 text-gray-400" /><span className="text-sm text-gray-500">Click to upload or drag & drop</span><span className="text-xs text-gray-400 mt-1">PNG, JPG, WEBP up to 10MB each · {6 - uploadedImages.length} slot{6 - uploadedImages.length !== 1 ? 's' : ''} remaining</span></>
+                )}
+              </label>
+            )}
+
+            {/* Thumbnails */}
+            {uploadedImages.length > 0 && (
+              <div className="grid grid-cols-3 sm:grid-cols-6 gap-3">
+                {uploadedImages.map((img, idx) => (
+                  <div key={idx} className="relative group aspect-square rounded-lg overflow-hidden border border-gray-200">
+                    <img src={img.preview} alt={img.name} className="w-full h-full object-cover" />
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors flex items-center justify-center">
+                      <button type="button" onClick={() => removeImage(idx)} className="opacity-0 group-hover:opacity-100 transition-opacity w-7 h-7 rounded-full bg-white flex items-center justify-center shadow">
+                        <X className="w-4 h-4 text-gray-700" />
+                      </button>
+                    </div>
+                    <div className="absolute bottom-0 left-0 right-0 bg-black/50 px-1.5 py-0.5">
+                      <p className="text-white text-[9px] truncate">{["Cover","Goals","Campaign","Process 1","Process 2","Process 3"][idx]}</p>
+                    </div>
+                  </div>
+                ))}
+                {/* Empty slots */}
+                {Array.from({ length: 6 - uploadedImages.length }).map((_, idx) => (
+                  <div key={`empty-${idx}`} className="aspect-square rounded-lg border border-dashed border-gray-200 flex items-center justify-center">
+                    <ImageIcon className="w-5 h-5 text-gray-300" />
+                  </div>
+                ))}
+              </div>
+            )}
+          </section>
+
+          <Button type="submit" size="lg" className="w-full h-14 text-base font-semibold gap-2" style={{ background: "oklch(0.12 0.02 240)" }} disabled={createMutation.isPending || uploadingCount > 0}>
             {createMutation.isPending
               ? <><Loader2 className="w-5 h-5 animate-spin" /> Starting generation...</>
               : <><ChevronRight className="w-5 h-5" /> Generate Proposal</>

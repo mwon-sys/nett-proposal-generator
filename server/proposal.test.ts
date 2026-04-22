@@ -19,44 +19,50 @@ describe("calculateFee - ecommerce", () => {
     expect(result.percent).toBe("20%");
   });
 
-  it("returns 15% for $7500-$11999 range", () => {
+  it("returns 18% for $7500-$11999 range", () => {
     const result = calculateFee(10000, true);
-    expect(result.monthlyFee).toBe(1500);
+    expect(result.monthlyFee).toBe(1800);
+    expect(result.percent).toBe("18%");
+  });
+
+  it("returns 17% for $12000-$19999 range", () => {
+    const result = calculateFee(15000, true);
+    expect(result.monthlyFee).toBe(2550);
+    expect(result.percent).toBe("17%");
+  });
+
+  it("returns 16% for $20000-$29999 range", () => {
+    const result = calculateFee(25000, true);
+    expect(result.monthlyFee).toBe(4000);
+    expect(result.percent).toBe("16%");
+  });
+
+  it("returns 15% for $30000-$44999 range", () => {
+    const result = calculateFee(40000, true);
+    expect(result.monthlyFee).toBe(6000);
     expect(result.percent).toBe("15%");
   });
 
-  it("returns 14% for $12000-$19999 range", () => {
-    const result = calculateFee(15000, true);
-    expect(result.monthlyFee).toBe(2100);
+  it("returns 14% for $45000-$59999 range", () => {
+    const result = calculateFee(50000, true);
+    expect(result.monthlyFee).toBe(7000);
     expect(result.percent).toBe("14%");
   });
 
-  it("returns 13% for $20000-$29999 range", () => {
-    const result = calculateFee(25000, true);
-    expect(result.monthlyFee).toBe(3250);
+  it("returns 13% for $60000-$74999 range", () => {
+    const result = calculateFee(65000, true);
+    expect(result.monthlyFee).toBe(8450);
     expect(result.percent).toBe("13%");
   });
 
-  it("returns 12% for $30000-$44999 range", () => {
-    const result = calculateFee(40000, true);
-    expect(result.monthlyFee).toBe(4800);
+  it("returns 12% for $75000-$100000 range", () => {
+    const result = calculateFee(90000, true);
+    expect(result.monthlyFee).toBe(10800);
     expect(result.percent).toBe("12%");
   });
 
-  it("returns 11% for $45000-$59999 range", () => {
-    const result = calculateFee(50000, true);
-    expect(result.monthlyFee).toBe(5500);
-    expect(result.percent).toBe("11%");
-  });
-
-  it("returns Custom for $100000+", () => {
-    const result = calculateFee(150000, true);
-    expect(result.percent).toBe("Custom");
-    expect(result.monthlyFee).toBe(0);
-  });
-
-  it("ecommerce has 10 tiers", () => {
-    expect(ECOMMERCE_TIERS).toHaveLength(10);
+  it("ecommerce has 9 tiers (no Custom tier)", () => {
+    expect(ECOMMERCE_TIERS).toHaveLength(9);
   });
 });
 

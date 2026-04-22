@@ -73,3 +73,10 @@
 ## Phase 9: Planet Desert Fixes
 - [x] Fix cover overlay darkness (too dark, image barely visible)
 - [x] Improve image scraping to avoid text-heavy banner images (added banner/slide/promo/delivered keywords to filter list)
+
+## Phase 10: Pricing Tiers & Image Upload
+- [x] Fix ECOMMERCE_TIERS in shared/constants.ts to match correct fee table
+- [x] Fix NON_ECOMMERCE_TIERS in shared/constants.ts to match correct fee table (was already correct)
+- [x] Add multi-image upload section to intake form (up to 6 images, optional)
+- [x] Wire uploaded images to S3 storage and pass through to proposal data
+- [x] Fall back to scraped images for any slots not filled by uploads
