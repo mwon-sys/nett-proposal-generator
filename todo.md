@@ -11,7 +11,7 @@
 - [x] Fee calculation logic (ecommerce + non-ecommerce tiers)
 - [x] AI copy generation router (invokeLLM for all 9 sections)
 - [x] Proposal save/retrieve procedures
-- [ ] PDF generation endpoint (server-side chromium/puppeteer)
+- [ ] PDF generation endpoint (server-side chromium/puppeteer) [deferred - browser print works]
 - [x] Shareable proposal URL generation
 
 ## Phase 3: Frontend - Auth & Form
@@ -39,7 +39,7 @@
 - [x] Proposal history dashboard (list with client, date, rep, links)
 - [x] Shareable proposal view page (permanent URL)
 - [x] Copy link button
-- [ ] Download PDF button (server-side rendering - pending)
+- [ ] Download PDF button (server-side rendering - pending) [deferred - browser print works]
 
 ## Phase 6: Testing & Delivery
 - [x] Vitest tests: 23 passing (fee calc, password, auth logout)
@@ -66,6 +66,10 @@
 - [x] CTA (Ready to Get Started): Add prospect image on the section
 
 ## Phase 8: Additional Fixes (Mike's Feedback Round 2)
-- [ ] Fix Meta and TikTok badges not showing in credentials section at bottom of CTA
-- [ ] Campaign Strategy rows: add green circle platform logo icon before each channel name
-- [ ] Campaign Strategy rows: remove monthly budget pill from each row
+- [x] Fix Meta and TikTok badges not showing in credentials section at bottom of CTA
+- [x] Campaign Strategy rows: add green circle platform logo icon before each channel name
+- [x] Campaign Strategy rows: remove monthly budget pill from each row
+
+## Phase 9: Planet Desert Fixes
+- [x] Fix cover overlay darkness (too dark, image barely visible)
+- [x] Improve image scraping to avoid text-heavy banner images (added banner/slide/promo/delivered keywords to filter list)

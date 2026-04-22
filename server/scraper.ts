@@ -58,13 +58,22 @@ export async function scrapeWebsiteImages(url: string): Promise<ScrapedImages> {
       }
     }
 
-    // Keywords that indicate a logo, icon, or non-photo asset — skip these
+    // Keywords that indicate a logo, icon, banner-with-text, or non-photo asset — skip these
     const badKeywords = [
       "logo", "icon", "favicon", "pixel", "tracking", "1x1", "avatar",
       "badge", "button", "arrow", "sprite", "placeholder",
       "white%402x", "White%402x", "white@2x", "White@2x",
       "CDPrimary", "cdprimary", "Primary+Logo", "primary+logo",
       "-logo-", "_logo_", "/logo/", "logo.", "logotype",
+      // Banner/promotional images that typically have text overlaid
+      "_delivered", "-delivered", "_banner", "-banner", "banner_",
+      "_slide", "-slide", "slide_", "slideshow",
+      "_hero_text", "hero-text", "_text_", "-text-",
+      "_promo", "-promo", "promo_",
+      "_sale", "-sale", "sale_",
+      "_offer", "-offer",
+      "_ad_", "-ad-",
+      "header_bg", "header-bg",
     ];
 
     // Resolve relative URLs and apply smart filtering

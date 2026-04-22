@@ -305,8 +305,8 @@ export default function ProposalView() {
           {/* Hero image — lighter overlay so it's clearly visible */}
           {heroImg && (
             <div className="absolute inset-0">
-              <img src={heroImg} alt="" className="w-full h-full object-cover" style={{ opacity: 0.55 }} />
-              <div className="absolute inset-0" style={{ background: "linear-gradient(to right, rgba(5,10,20,0.92) 45%, rgba(5,10,20,0.35) 100%)" }} />
+              <img src={heroImg} alt="" className="w-full h-full object-cover" style={{ opacity: 0.85 }} />
+              <div className="absolute inset-0" style={{ background: "linear-gradient(to right, rgba(5,10,20,0.78) 40%, rgba(5,10,20,0.15) 100%)" }} />
             </div>
           )}
           <div className="relative z-10 flex flex-col justify-between w-full max-w-6xl mx-auto px-12 py-14">
