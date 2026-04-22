@@ -104,14 +104,13 @@ function getManagementFee(totalSpend: number, isEcommerce: boolean): { percent: 
   if (isEcommerce) {
     if (totalSpend <= 2999)  return { percent: "$600 flat", fee: 600 };
     if (totalSpend <= 7499)  return { percent: "20%", fee: Math.round(totalSpend * 0.20) };
-    if (totalSpend <= 11999) return { percent: "15%", fee: Math.round(totalSpend * 0.15) };
-    if (totalSpend <= 19999) return { percent: "14%", fee: Math.round(totalSpend * 0.14) };
-    if (totalSpend <= 29999) return { percent: "13%", fee: Math.round(totalSpend * 0.13) };
-    if (totalSpend <= 44999) return { percent: "12%", fee: Math.round(totalSpend * 0.12) };
-    if (totalSpend <= 59999) return { percent: "11%", fee: Math.round(totalSpend * 0.11) };
-    if (totalSpend <= 74999) return { percent: "10%", fee: Math.round(totalSpend * 0.10) };
-    if (totalSpend <= 99999) return { percent: "9%",  fee: Math.round(totalSpend * 0.09) };
-    return { percent: "Custom", fee: 0 };
+    if (totalSpend <= 11999) return { percent: "18%", fee: Math.round(totalSpend * 0.18) };
+    if (totalSpend <= 19999) return { percent: "17%", fee: Math.round(totalSpend * 0.17) };
+    if (totalSpend <= 29999) return { percent: "16%", fee: Math.round(totalSpend * 0.16) };
+    if (totalSpend <= 44999) return { percent: "15%", fee: Math.round(totalSpend * 0.15) };
+    if (totalSpend <= 59999) return { percent: "14%", fee: Math.round(totalSpend * 0.14) };
+    if (totalSpend <= 74999) return { percent: "13%", fee: Math.round(totalSpend * 0.13) };
+    return { percent: "12%", fee: Math.round(totalSpend * 0.12) };
   } else {
     if (totalSpend <= 1999)  return { percent: "$400 flat", fee: 400 };
     if (totalSpend <= 5999)  return { percent: "20%", fee: Math.round(totalSpend * 0.20) };
@@ -124,16 +123,15 @@ function getManagementFee(totalSpend: number, isEcommerce: boolean): { percent: 
 
 function FeeTable({ totalSpend, isEcommerce }: { totalSpend: number; isEcommerce: boolean }) {
   const ecomTiers = [
-    { range: "$1 – $2,999",       percent: "$600 flat", min: 1,      max: 2999 },
-    { range: "$3,000 – $7,499",   percent: "20%",       min: 3000,   max: 7499 },
-    { range: "$7,500 – $11,999",  percent: "15%",       min: 7500,   max: 11999 },
-    { range: "$12,000 – $19,999", percent: "14%",       min: 12000,  max: 19999 },
-    { range: "$20,000 – $29,999", percent: "13%",       min: 20000,  max: 29999 },
-    { range: "$30,000 – $44,999", percent: "12%",       min: 30000,  max: 44999 },
-    { range: "$45,000 – $59,999", percent: "11%",       min: 45000,  max: 59999 },
-    { range: "$60,000 – $74,999", percent: "10%",       min: 60000,  max: 74999 },
-    { range: "$75,000 – $99,999", percent: "9%",        min: 75000,  max: 99999 },
-    { range: "$100,000+",          percent: "Custom",    min: 100000, max: Infinity },
+    { range: "$1 – $2,999",        percent: "$600 flat", min: 1,      max: 2999 },
+    { range: "$3,000 – $7,499",    percent: "20%",       min: 3000,   max: 7499 },
+    { range: "$7,500 – $11,999",   percent: "18%",       min: 7500,   max: 11999 },
+    { range: "$12,000 – $19,999",  percent: "17%",       min: 12000,  max: 19999 },
+    { range: "$20,000 – $29,999",  percent: "16%",       min: 20000,  max: 29999 },
+    { range: "$30,000 – $44,999",  percent: "15%",       min: 30000,  max: 44999 },
+    { range: "$45,000 – $59,999",  percent: "14%",       min: 45000,  max: 59999 },
+    { range: "$60,000 – $74,999",  percent: "13%",       min: 60000,  max: 74999 },
+    { range: "$75,000 – $100,000", percent: "12%",       min: 75000,  max: 100000 },
   ];
   const nonEcomTiers = [
     { range: "$1 – $1,999",       percent: "$400 flat", min: 1,     max: 1999 },
@@ -261,12 +259,14 @@ export default function ProposalView() {
   const mgmtFee = getManagementFee(pd.totalMonthlySpend, pd.isEcommerce);
   const imgs = (pd as any).images || {};
   const heroImg = imgs.hero || imgs.campaign || "";
+  const goalsImg = imgs.goals || imgs.campaign || heroImg;
+  const ctaImg = imgs.extras?.[0] || imgs.goals || imgs.campaign || heroImg;
   const copy = (pd as any).copy || {};
-  // Pick up to 3 images for the process ribbon
+  // Pick up to 3 images for the process ribbon — avoid reusing hero
   const processImgs = [
-    imgs.process1 || imgs.hero,
-    imgs.process2 || imgs.campaign,
-    imgs.process3 || imgs.hero,
+    imgs.process1 || imgs.campaign || heroImg,
+    imgs.process2 || imgs.goals || heroImg,
+    imgs.process3 || imgs.campaign || heroImg,
   ].filter(Boolean) as string[];
 
   const GREEN = "oklch(0.42 0.12 145)";
@@ -404,8 +404,8 @@ export default function ProposalView() {
             <div className="grid grid-cols-2 gap-12 items-start">
               {/* Left: prospect image */}
               <div className="rounded-2xl overflow-hidden" style={{ minHeight: "420px" }}>
-                {heroImg ? (
-                  <img src={heroImg} alt={pd.clientName} className="w-full h-full object-cover" style={{ minHeight: "420px" }}
+                {goalsImg ? (
+                  <img src={goalsImg} alt={pd.clientName} className="w-full h-full object-cover" style={{ minHeight: "420px" }}
                     onError={(e) => { const el = e.target as HTMLImageElement; el.parentElement!.style.background = GREEN; el.style.display = "none"; }} />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center" style={{ background: GREEN, minHeight: "420px" }}>
@@ -648,8 +648,8 @@ export default function ProposalView() {
           <div className="grid grid-cols-2" style={{ minHeight: "480px" }}>
             {/* Left: image */}
             <div className="relative overflow-hidden">
-              {heroImg ? (
-                <img src={heroImg} alt={pd.clientName} className="absolute inset-0 w-full h-full object-cover" style={{ opacity: 0.7 }}
+              {ctaImg ? (
+                <img src={ctaImg} alt={pd.clientName} className="absolute inset-0 w-full h-full object-cover" style={{ opacity: 0.7 }}
                   onError={(e) => { const el = e.target as HTMLImageElement; el.style.display = "none"; }} />
               ) : null}
               <div className="absolute inset-0" style={{ background: "linear-gradient(to right, transparent 60%, rgba(10,15,30,0.7) 100%)" }} />

@@ -80,3 +80,9 @@
 - [x] Add multi-image upload section to intake form (up to 6 images, optional)
 - [x] Wire uploaded images to S3 storage and pass through to proposal data
 - [x] Fall back to scraped images for any slots not filled by uploads
+
+## Phase 11: Fee Table & Image Replication Fixes
+- [x] Fix fee schedule renderer: FeeTable and getManagementFee() in ProposalView now use correct tiers
+- [x] Fix image slot assignment: added goals slot, CTA uses ctaImg, Goals uses goalsImg
+- [x] Verify Ring proposal shows correct ecommerce fee table (18% at $7,500-$11,999, ends at 12%)
+- [x] Verify Ring Goals section uses different image from cover (indoor camera vs family photo)

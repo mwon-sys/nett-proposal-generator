@@ -100,13 +100,15 @@ export async function generateProposal(input: ProposalInput): Promise<ProposalDa
     return null;
   };
 
+  // Slot order: 0=hero(cover), 1=goals, 2=campaign, 3=process1, 4=process2, 5=process3
   const images = {
     hero:      get(0, 0),
-    campaign:  get(1, 1, 0),
-    process1:  get(2, 2, 0),
-    process2:  get(3, 3, 1),
-    process3:  get(4, 4, 2),
-    extras:    uploaded.slice(5).length > 0 ? uploaded.slice(5) : scrapedImgs.slice(5),
+    goals:     get(1, 1, 0),
+    campaign:  get(2, 2, 1, 0),
+    process1:  get(3, 3, 0),
+    process2:  get(4, 4, 1),
+    process3:  get(5, 5, 2),
+    extras:    uploaded.slice(6).length > 0 ? uploaded.slice(6) : scrapedImgs.slice(6),
   };
 
   // Generate AI copy

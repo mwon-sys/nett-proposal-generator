@@ -239,7 +239,7 @@ export default function Home() {
             <div className="mb-6">
               <h2 className="text-lg font-semibold text-gray-900" style={{ fontFamily: "'Playfair Display', serif" }}>Photos <span className="text-gray-400 font-normal text-sm">(Optional)</span></h2>
               <p className="text-gray-500 text-sm mt-1">Upload up to 6 photos to use in the proposal. If left blank, images will be pulled automatically from the client's website.</p>
-              <p className="text-gray-400 text-xs mt-1">Slots: Cover · Goals · Campaign · Process 1 · Process 2 · Process 3</p>
+              <p className="text-gray-400 text-xs mt-1">Slots (in order): Cover · Goals · Campaign · Process 1 · Process 2 · Process 3</p>
             </div>
 
             {/* Upload drop zone */}
@@ -273,7 +273,7 @@ export default function Home() {
                       </button>
                     </div>
                     <div className="absolute bottom-0 left-0 right-0 bg-black/50 px-1.5 py-0.5">
-                      <p className="text-white text-[9px] truncate">{["Cover","Goals","Campaign","Process 1","Process 2","Process 3"][idx]}</p>
+                      <p className="text-white text-[9px] truncate">{["Cover","Goals","Campaign","Process 1","Process 2","Process 3"][idx] ?? `Extra ${idx - 5}`}</p>
                     </div>
                   </div>
                 ))}
