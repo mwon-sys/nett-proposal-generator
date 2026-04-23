@@ -93,8 +93,13 @@
 - [x] Update sales rep dropdown in intake form to match correct full names
 
 ## Phase 13: Image Quality Improvements
-- [ ] Scraper: Strip/upgrade Shopify ?width= URL parameters to request full-resolution images
-- [ ] Scraper: Prefer landscape-oriented images over portrait/square for hero/goals/campaign slots
-- [ ] Upload UI: Show resolution warning badge on thumbnails below 800px in either dimension
-- [ ] Run full test suite and verify no regressions
-- [ ] Create living Notion doc for the Proposal Generator
+- [x] Scraper: Strip/upgrade Shopify ?width= URL parameters to request full-resolution images
+- [x] Scraper: Prefer landscape-oriented images over portrait/square for hero/goals/campaign slots
+- [x] Upload UI: Show resolution warning badge on thumbnails below 800px in either dimension
+- [x] Run full test suite and verify no regressions
+- [x] Create living Notion doc for the Proposal Generator
+
+## Phase 14: Image Replication Bug Fix
+- [x] Fix proposalGenerator.ts: replaced get() fallback with pickUnique() that tracks used URLs across all slots
+- [x] Fix ProposalView.tsx: processImgs and ctaImg now avoid reusing the same URL already assigned to hero/goals
+- [x] All 24 tests passing, 0 TypeScript errors

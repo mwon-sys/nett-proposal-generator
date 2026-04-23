@@ -90,25 +90,36 @@ export async function generateProposal(input: ProposalInput): Promise<ProposalDa
   const scraped = await scrapeWebsiteImages(input.clientWebsite);
   const scrapedImgs = scraped.images;
 
-  // Use uploaded images first, fall back to scraped images for any missing slots
+  // Use uploaded images first, fall back to scraped images for any missing slots.
+  // IMPORTANT: Each URL may only be used once across all slots to prevent replication.
   const uploaded = input.uploadedImages ?? [];
-  const get = (uploadedIdx: number, ...scrapedFallbacks: number[]) => {
-    if (uploaded[uploadedIdx]) return uploaded[uploadedIdx];
-    for (const fi of scrapedFallbacks) {
-      if (scrapedImgs[fi]) return scrapedImgs[fi];
+  const usedUrls = new Set<string>();
+
+  const pickUnique = (candidates: (string | null | undefined)[]): string | null => {
+    for (const url of candidates) {
+      if (url && !usedUrls.has(url)) {
+        usedUrls.add(url);
+        return url;
+      }
+    }
+    // If all candidates are already used, allow reuse of the best available one
+    // (better to show an image than a blank slot)
+    for (const url of candidates) {
+      if (url) return url;
     }
     return null;
   };
 
   // Slot order: 0=hero(cover), 1=goals, 2=campaign, 3=process1, 4=process2, 5=process3
+  // For each slot: prefer the uploaded image at that index, then try scraped images in priority order
   const images = {
-    hero:      get(0, 0),
-    goals:     get(1, 1, 0),
-    campaign:  get(2, 2, 1, 0),
-    process1:  get(3, 3, 0),
-    process2:  get(4, 4, 1),
-    process3:  get(5, 5, 2),
-    extras:    uploaded.slice(6).length > 0 ? uploaded.slice(6) : scrapedImgs.slice(6),
+    hero:     pickUnique([uploaded[0], scrapedImgs[0], scrapedImgs[1], scrapedImgs[2]]),
+    goals:    pickUnique([uploaded[1], scrapedImgs[1], scrapedImgs[2], scrapedImgs[0], scrapedImgs[3]]),
+    campaign: pickUnique([uploaded[2], scrapedImgs[2], scrapedImgs[3], scrapedImgs[1], scrapedImgs[0]]),
+    process1: pickUnique([uploaded[3], scrapedImgs[3], scrapedImgs[4], scrapedImgs[0]]),
+    process2: pickUnique([uploaded[4], scrapedImgs[4], scrapedImgs[5], scrapedImgs[1]]),
+    process3: pickUnique([uploaded[5], scrapedImgs[5], scrapedImgs[3], scrapedImgs[2]]),
+    extras:   uploaded.slice(6).length > 0 ? uploaded.slice(6) : scrapedImgs.slice(6),
   };
 
   // Generate AI copy

@@ -260,14 +260,29 @@ export default function ProposalView() {
   const imgs = (pd as any).images || {};
   const heroImg = imgs.hero || imgs.campaign || "";
   const goalsImg = imgs.goals || imgs.campaign || heroImg;
-  const ctaImg = imgs.extras?.[0] || imgs.goals || imgs.campaign || heroImg;
+  // CTA image: prefer extras, then a slot not already used by hero/goals
+  const ctaImg = imgs.extras?.[0] ||
+    (imgs.campaign && imgs.campaign !== heroImg && imgs.campaign !== goalsImg ? imgs.campaign : null) ||
+    (imgs.process1 && imgs.process1 !== heroImg ? imgs.process1 : null) ||
+    imgs.goals || imgs.campaign || heroImg;
   const copy = (pd as any).copy || {};
-  // Pick up to 3 images for the process ribbon — avoid reusing hero
-  const processImgs = [
-    imgs.process1 || imgs.campaign || heroImg,
-    imgs.process2 || imgs.goals || heroImg,
-    imgs.process3 || imgs.campaign || heroImg,
-  ].filter(Boolean) as string[];
+  // Pick up to 3 images for the process ribbon — avoid reusing the same image
+  const processImgs = (() => {
+    const used = new Set<string>();
+    const pick = (...candidates: (string | null | undefined)[]) => {
+      for (const c of candidates) {
+        if (c && !used.has(c)) { used.add(c); return c; }
+      }
+      // fallback: allow reuse if nothing else available
+      for (const c of candidates) { if (c) return c; }
+      return null;
+    };
+    return [
+      pick(imgs.process1, imgs.campaign, heroImg, goalsImg),
+      pick(imgs.process2, imgs.goals, imgs.campaign, heroImg),
+      pick(imgs.process3, imgs.campaign, imgs.goals, heroImg),
+    ].filter(Boolean) as string[];
+  })();
 
   const GREEN = "oklch(0.42 0.12 145)";
   const DARK_NAVY = "oklch(0.12 0.02 240)";
