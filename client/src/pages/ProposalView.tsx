@@ -24,12 +24,12 @@ const ASSETS = {
 };
 
 const TEAM = [
-  { name: "Joe Mounsey",    title: "Founder & CEO",              img: ASSETS.joe },
-  { name: "Ally V.",        title: "Director of Client Success", img: ASSETS.ally },
-  { name: "Connor",         title: "Senior PPC Strategist",      img: ASSETS.connor },
-  { name: "Mike Won",       title: "Director of Sales",          img: ASSETS.mike },
-  { name: "Brandon",        title: "Paid Social Specialist",     img: ASSETS.brandon },
-  { name: "Sean",           title: "PPC Account Manager",        img: ASSETS.sean },
+  { name: "Joe Mounsey",      title: "Paid Media Strategist",             img: ASSETS.joe },
+  { name: "Ally Villasenor",  title: "Digital Marketing Specialist",      img: ASSETS.ally },
+  { name: "Connor Duffy",     title: "Social Media Marketing Specialist", img: ASSETS.connor },
+  { name: "Mike Won",         title: "Head of Strategy",                  img: ASSETS.mike },
+  { name: "Sean Maloney",     title: "Head of Sales",                     img: ASSETS.sean },
+  { name: "Brandon Celotto",  title: "Operations Wiz",                    img: ASSETS.brandon },
 ];
 
 // ─── Channel brand logo SVGs ──────────────────────────────────────────────────
@@ -608,7 +608,7 @@ export default function ProposalView() {
               <p className="text-gray-700 text-lg italic leading-relaxed" style={{ fontFamily: SERIF }}>
                 "{copy.teamQuote || `As we begin this journey to help ${pd.clientName} grow, don't be surprised if we end up learning about each other's pets, families and share a lot of laughs along the way.`}"
               </p>
-              <p className="text-gray-400 text-sm mt-3 font-medium">— Joe Mounsey, Founder & CEO</p>
+              <p className="text-gray-400 text-sm mt-3 font-medium">— Joe Mounsey, Paid Media Strategist</p>
             </div>
           </div>
         </section>

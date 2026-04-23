@@ -86,3 +86,8 @@
 - [x] Fix image slot assignment: added goals slot, CTA uses ctaImg, Goals uses goalsImg
 - [x] Verify Ring proposal shows correct ecommerce fee table (18% at $7,500-$11,999, ends at 12%)
 - [x] Verify Ring Goals section uses different image from cover (indoor camera vs family photo)
+
+## Phase 12: Team Names & Titles Update
+- [x] Update team member names and titles in ProposalView (Joe, Ally, Connor, Mike, Sean, Brandon)
+- [x] Keep quote attributed to Joe Mounsey, updated title to "Paid Media Strategist"
+- [x] Update sales rep dropdown in intake form to match correct full names

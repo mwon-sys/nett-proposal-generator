@@ -9,7 +9,7 @@ import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
 import { Plus, Trash2, Lock, Loader2, ChevronRight, LayoutDashboard, Upload, X, ImageIcon } from "lucide-react";
 
-const SALES_REPS = ["Joe Mounsey", "Ally V.", "Connor", "Mike Won", "Brandon", "Sean"];
+const SALES_REPS = ["Joe Mounsey", "Ally Villasenor", "Connor Duffy", "Mike Won", "Sean Maloney", "Brandon Celotto"];
 const AD_CHANNELS = ["Google Search","Google Performance Max","Google Maps","Google Display","YouTube","Meta Ads","TikTok Ads","Bing/Microsoft Ads","LinkedIn Ads","Pinterest Ads"];
 interface Channel { name: string; budget: number; }
 const SESSION_KEY = "nett_auth";
