@@ -91,3 +91,10 @@
 - [x] Update team member names and titles in ProposalView (Joe, Ally, Connor, Mike, Sean, Brandon)
 - [x] Keep quote attributed to Joe Mounsey, updated title to "Paid Media Strategist"
 - [x] Update sales rep dropdown in intake form to match correct full names
+
+## Phase 13: Image Quality Improvements
+- [ ] Scraper: Strip/upgrade Shopify ?width= URL parameters to request full-resolution images
+- [ ] Scraper: Prefer landscape-oriented images over portrait/square for hero/goals/campaign slots
+- [ ] Upload UI: Show resolution warning badge on thumbnails below 800px in either dimension
+- [ ] Run full test suite and verify no regressions
+- [ ] Create living Notion doc for the Proposal Generator

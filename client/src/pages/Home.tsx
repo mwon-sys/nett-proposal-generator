@@ -30,7 +30,7 @@ export default function Home() {
   const [salesRepEmail, setSalesRepEmail] = useState("");
   const [salesRepPhone, setSalesRepPhone] = useState("");
 
-  const [uploadedImages, setUploadedImages] = useState<{ url: string; preview: string; name: string }[]>([]);
+  const [uploadedImages, setUploadedImages] = useState<{ url: string; preview: string; name: string; lowRes?: boolean }[]>([]);
   const [uploadingCount, setUploadingCount] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
 
@@ -48,12 +48,21 @@ export default function Home() {
       if (!file.type.startsWith("image/")) { toast.error(`${file.name} is not an image`); setUploadingCount(prev => prev - 1); continue; }
       if (file.size > 10 * 1024 * 1024) { toast.error(`${file.name} exceeds 10MB limit`); setUploadingCount(prev => prev - 1); continue; }
       const preview = URL.createObjectURL(file);
+      // Check image dimensions to warn about low-res uploads
+      const checkDimensions = (): Promise<boolean> => new Promise(resolve => {
+        const img = new Image();
+        img.onload = () => resolve(img.width < 800 || img.height < 800);
+        img.onerror = () => resolve(false);
+        img.src = preview;
+      });
       const reader = new FileReader();
       reader.onload = async (e) => {
         try {
           const base64 = e.target?.result as string;
+          const lowRes = await checkDimensions();
           const { url } = await uploadImageMutation.mutateAsync({ base64, filename: file.name });
-          setUploadedImages(prev => [...prev, { url, preview, name: file.name }]);
+          setUploadedImages(prev => [...prev, { url, preview, name: file.name, lowRes }]);
+          if (lowRes) toast.warning(`${file.name} is low resolution — may appear pixelated in the proposal`);
         } catch { toast.error(`Failed to upload ${file.name}`); }
         finally { setUploadingCount(prev => prev - 1); }
       };
@@ -265,13 +274,18 @@ export default function Home() {
             {uploadedImages.length > 0 && (
               <div className="grid grid-cols-3 sm:grid-cols-6 gap-3">
                 {uploadedImages.map((img, idx) => (
-                  <div key={idx} className="relative group aspect-square rounded-lg overflow-hidden border border-gray-200">
+                  <div key={idx} className={`relative group aspect-square rounded-lg overflow-hidden border ${img.lowRes ? 'border-yellow-400' : 'border-gray-200'}`}>
                     <img src={img.preview} alt={img.name} className="w-full h-full object-cover" />
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors flex items-center justify-center">
                       <button type="button" onClick={() => removeImage(idx)} className="opacity-0 group-hover:opacity-100 transition-opacity w-7 h-7 rounded-full bg-white flex items-center justify-center shadow">
                         <X className="w-4 h-4 text-gray-700" />
                       </button>
                     </div>
+                    {img.lowRes && (
+                      <div className="absolute top-1 right-1 bg-yellow-400 rounded-full w-4 h-4 flex items-center justify-center" title="Low resolution — may appear pixelated">
+                        <span className="text-yellow-900 text-[8px] font-bold leading-none">!</span>
+                      </div>
+                    )}
                     <div className="absolute bottom-0 left-0 right-0 bg-black/50 px-1.5 py-0.5">
                       <p className="text-white text-[9px] truncate">{["Cover","Goals","Campaign","Process 1","Process 2","Process 3"][idx] ?? `Extra ${idx - 5}`}</p>
                     </div>

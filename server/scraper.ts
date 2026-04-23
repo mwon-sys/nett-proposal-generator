@@ -6,9 +6,51 @@ export interface ScrapedImages {
 }
 
 /**
+ * Upgrades Shopify CDN image URLs to request full-resolution images.
+ * Shopify appends ?width=NNN or &width=NNN to serve resized images.
+ * We strip or increase the width parameter to get the full-size version.
+ */
+function upgradeShopifyUrl(url: string): string {
+  try {
+    const parsed = new URL(url);
+    // Only touch Shopify CDN URLs
+    if (!parsed.hostname.includes("shopify") && !parsed.pathname.includes("cdn/shop")) {
+      return url;
+    }
+    // Remove width/height resize params to get the original full-res image
+    parsed.searchParams.delete("width");
+    parsed.searchParams.delete("height");
+    parsed.searchParams.delete("crop");
+    // If the URL had a ?v= version param, keep it (it's a cache buster, not a resize param)
+    return parsed.toString();
+  } catch {
+    return url;
+  }
+}
+
+/**
+ * Estimates whether an image URL is likely landscape-oriented based on URL hints.
+ * Shopify and some CDNs encode dimensions in the filename (e.g. _800x600.jpg).
+ * Returns: 1 = likely landscape, 0 = unknown, -1 = likely portrait/square
+ */
+function estimateOrientation(url: string): number {
+  // Look for WxH patterns in the URL (e.g. 1200x800, 800x600)
+  const dimMatch = url.match(/[_-](\d{3,4})x(\d{3,4})[_.\-]/);
+  if (dimMatch) {
+    const w = parseInt(dimMatch[1]);
+    const h = parseInt(dimMatch[2]);
+    if (w > h * 1.2) return 1;   // clearly landscape
+    if (h > w * 1.2) return -1;  // clearly portrait
+    return 0;                     // roughly square
+  }
+  return 0; // unknown
+}
+
+/**
  * Scrapes a website URL and returns usable image URLs.
  * Prioritizes product/lifestyle photos over logos and icons.
  * Checks multiple pages to find the best images.
+ * Prefers landscape images for hero/campaign/goals slots.
  */
 export async function scrapeWebsiteImages(url: string): Promise<ScrapedImages> {
   try {
@@ -76,7 +118,7 @@ export async function scrapeWebsiteImages(url: string): Promise<ScrapedImages> {
       "header_bg", "header-bg",
     ];
 
-    // Resolve relative URLs and apply smart filtering
+    // Resolve relative URLs, upgrade Shopify URLs, and apply smart filtering
     const resolvedUrls: string[] = [];
     const seen = new Set<string>();
 
@@ -91,6 +133,9 @@ export async function scrapeWebsiteImages(url: string): Promise<ScrapedImages> {
           resolved = `${baseUrl.protocol}//${baseUrl.host}/${raw}`;
         }
 
+        // Upgrade Shopify URLs to full resolution before deduplication
+        resolved = upgradeShopifyUrl(resolved);
+
         const lowerResolved = resolved.toLowerCase();
 
         // Skip if it contains bad keywords
@@ -100,7 +145,7 @@ export async function scrapeWebsiteImages(url: string): Promise<ScrapedImages> {
 
         // Must be an image file or from a known image CDN
         const isImageUrl =
-          resolved.match(/\.(jpg|jpeg|png|webp)(\?.*)?$/i) ||
+          resolved.match(/\.(jpg|jpeg|png|webp|avif)(\?.*)?$/i) ||
           lowerResolved.includes("squarespace-cdn") ||
           lowerResolved.includes("cloudinary") ||
           lowerResolved.includes("imgix") ||
@@ -122,8 +167,8 @@ export async function scrapeWebsiteImages(url: string): Promise<ScrapedImages> {
     }
 
     // Verify images are accessible AND large enough to be real photos (not tiny icons)
-    const verifiedUrls: string[] = [];
-    const toCheck = resolvedUrls.slice(0, 25);
+    const verifiedUrls: Array<{ url: string; orientation: number }> = [];
+    const toCheck = resolvedUrls.slice(0, 30); // check a few more to find landscape options
 
     await Promise.allSettled(
       toCheck.map(async (imgUrl) => {
@@ -138,7 +183,7 @@ export async function scrapeWebsiteImages(url: string): Promise<ScrapedImages> {
           const contentLength = parseInt(headRes.headers["content-length"] || "0");
           // Must be an image and at least 40KB (filters out logos, icons, tiny graphics)
           if (contentType.includes("image") && contentLength > 40000) {
-            verifiedUrls.push(imgUrl);
+            verifiedUrls.push({ url: imgUrl, orientation: estimateOrientation(imgUrl) });
           }
         } catch {
           // not accessible
@@ -146,7 +191,12 @@ export async function scrapeWebsiteImages(url: string): Promise<ScrapedImages> {
       })
     );
 
-    const uniqueVerified = Array.from(new Set(verifiedUrls));
+    // Sort: landscape images first (orientation=1), then unknown (0), then portrait (-1)
+    // This is a stable soft-sort — landscape is preferred but portrait is still used if needed
+    const sorted = verifiedUrls.sort((a, b) => b.orientation - a.orientation);
+    const uniqueVerified = Array.from(
+      new Map(sorted.map(item => [item.url, item])).values()
+    ).map(item => item.url);
 
     return {
       heroImage: uniqueVerified[0] || null,
