@@ -189,20 +189,42 @@ Return ONLY valid JSON with this exact structure:
   "ctaButtonText": "Schedule Your Strategy Call"
 }`;
 
-  const response = await invokeLLM({
-    messages: [
-      { role: "system", content: "You are a senior digital marketing copywriter. Return only valid JSON, no markdown, no explanation." },
-      { role: "user", content: prompt },
-    ],
-    response_format: { type: "json_object" } as any,
-  });
+  // Helper: extract JSON from LLM response, stripping any markdown fences
+  const extractJson = (raw: unknown): ProposalData["copy"] => {
+    let text = typeof raw === "string" ? raw : JSON.stringify(raw);
+    // Strip markdown code fences if present (```json ... ``` or ``` ... ```)
+    text = text.replace(/^```(?:json)?\s*/i, "").replace(/\s*```\s*$/, "").trim();
+    return JSON.parse(text);
+  };
 
-  let copy: ProposalData["copy"];
-  try {
-    const content = response.choices[0].message.content;
-    copy = JSON.parse(typeof content === "string" ? content : JSON.stringify(content));
-  } catch {
-    throw new Error("Failed to parse AI response");
+  // Attempt LLM call with up to 3 retries on parse failure
+  let copy: ProposalData["copy"] | null = null;
+  let lastError: unknown;
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    try {
+      const response = await invokeLLM({
+        messages: [
+          { role: "system", content: "You are a senior digital marketing copywriter. Return only valid JSON, no markdown fences, no explanation." },
+          { role: "user", content: prompt },
+        ],
+        response_format: { type: "json_object" } as any,
+      });
+      const rawContent = response.choices[0].message.content;
+      copy = extractJson(rawContent);
+      break; // success — exit retry loop
+    } catch (err) {
+      lastError = err;
+      console.error(`[Generator] AI parse attempt ${attempt} failed:`, err);
+      if (attempt < 3) {
+        // Brief pause before retry
+        await new Promise(res => setTimeout(res, 1000 * attempt));
+      }
+    }
+  }
+
+  if (!copy) {
+    console.error("[Generator] All 3 AI parse attempts failed. Last error:", lastError);
+    throw new Error("Failed to generate proposal copy after 3 attempts. Please try again.");
   }
 
   return {
