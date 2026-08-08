@@ -116,6 +116,16 @@ export async function scrapeWebsiteImages(url: string): Promise<ScrapedImages> {
       "_offer", "-offer",
       "_ad_", "-ad-",
       "header_bg", "header-bg",
+      // CTA buttons and UI elements that appear as image assets
+      "shop-now", "shop_now", "shopnow",
+      "buy-now", "buy_now", "buynow",
+      "add-to-cart", "add_to_cart",
+      "learn-more", "learn_more",
+      "get-started", "get_started",
+      "sign-up", "sign_up",
+      "cta-", "-cta",
+      "btn-", "-btn",
+      "checkout", "subscribe",
     ];
 
     // Resolve relative URLs, upgrade Shopify URLs, and apply smart filtering
