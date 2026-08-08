@@ -211,7 +211,8 @@ Return ONLY valid JSON with this exact structure:
   for (let attempt = 1; attempt <= 3; attempt++) {
     try {
       const response = await invokeLLM({
-        model: "gpt-5-mini",
+        model: "gemini-2.5-flash",
+        max_tokens: 4096,
         messages: [
           { role: "system", content: "You are a senior digital marketing copywriter. You MUST return only valid JSON matching the exact schema provided. No markdown, no code fences, no explanation — pure JSON only." },
           { role: "user", content: prompt },

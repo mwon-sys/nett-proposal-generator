@@ -58,11 +58,11 @@ export type ToolChoice =
 export type InvokeParams = {
   messages: Message[];
   model?: string;
+  maxTokens?: number;
+  max_tokens?: number;
   tools?: Tool[];
   toolChoice?: ToolChoice;
   tool_choice?: ToolChoice;
-  maxTokens?: number;
-  max_tokens?: number;
   outputSchema?: OutputSchema;
   output_schema?: OutputSchema;
   responseFormat?: ResponseFormat;
@@ -272,6 +272,8 @@ export async function invokeLLM(params: InvokeParams): Promise<InvokeResult> {
   const {
     messages,
     model,
+    maxTokens,
+    max_tokens,
     tools,
     toolChoice,
     tool_choice,
@@ -298,10 +300,8 @@ export async function invokeLLM(params: InvokeParams): Promise<InvokeResult> {
     payload.tool_choice = normalizedToolChoice;
   }
 
-  payload.max_tokens = 32768
-  payload.thinking = {
-    "budget_tokens": 128
-  }
+  // Use caller-provided max_tokens if given, otherwise use a sensible default
+  payload.max_tokens = maxTokens ?? max_tokens ?? 4096;
 
   const normalizedResponseFormat = normalizeResponseFormat({
     responseFormat,
