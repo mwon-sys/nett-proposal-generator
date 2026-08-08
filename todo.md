@@ -103,3 +103,9 @@
 - [x] Fix proposalGenerator.ts: replaced get() fallback with pickUnique() that tracks used URLs across all slots
 - [x] Fix ProposalView.tsx: processImgs and ctaImg now avoid reusing the same URL already assigned to hero/goals
 - [x] All 24 tests passing, 0 TypeScript errors
+
+## Phase 15: AI Parse Failure Fix
+- [x] Add extractJson() helper to strip markdown code fences before JSON.parse
+- [x] Add retry loop (up to 3 attempts with backoff) around LLM call
+- [x] Add detailed per-attempt error logging for easier future debugging
+- [x] All 24 tests passing, 0 TypeScript errors. Checkpoint: 37ccd932

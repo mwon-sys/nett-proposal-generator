@@ -190,8 +190,16 @@ Return ONLY valid JSON with this exact structure:
 }`;
 
   // Helper: extract JSON from LLM response, stripping any markdown fences
+  // Helper: safely extract JSON from LLM response content
   const extractJson = (raw: unknown): ProposalData["copy"] => {
-    let text = typeof raw === "string" ? raw : JSON.stringify(raw);
+    if (raw === null || raw === undefined) {
+      throw new Error("LLM returned null/undefined content");
+    }
+    // If already an object (structured output), return directly
+    if (typeof raw === "object") {
+      return raw as ProposalData["copy"];
+    }
+    let text = String(raw).trim();
     // Strip markdown code fences if present (```json ... ``` or ``` ... ```)
     text = text.replace(/^```(?:json)?\s*/i, "").replace(/\s*```\s*$/, "").trim();
     return JSON.parse(text);
@@ -203,13 +211,53 @@ Return ONLY valid JSON with this exact structure:
   for (let attempt = 1; attempt <= 3; attempt++) {
     try {
       const response = await invokeLLM({
+        model: "gpt-5-mini",
         messages: [
-          { role: "system", content: "You are a senior digital marketing copywriter. Return only valid JSON, no markdown fences, no explanation." },
+          { role: "system", content: "You are a senior digital marketing copywriter. You MUST return only valid JSON matching the exact schema provided. No markdown, no code fences, no explanation — pure JSON only." },
           { role: "user", content: prompt },
         ],
-        response_format: { type: "json_object" } as any,
+        response_format: {
+          type: "json_schema",
+          json_schema: {
+            name: "proposal_copy",
+            strict: true,
+            schema: {
+              type: "object",
+              properties: {
+                coverTagline: { type: "string" },
+                coverSubtitle: { type: "string" },
+                marketHeadline: { type: "string" },
+                marketIntro: { type: "string" },
+                marketStats: { type: "array", items: { type: "object", properties: { number: { type: "string" }, label: { type: "string" } }, required: ["number", "label"], additionalProperties: false } },
+                marketInsights: { type: "array", items: { type: "string" } },
+                marketSource: { type: "string" },
+                goalsHeadline: { type: "string" },
+                goalsIntro: { type: "string" },
+                goalsList: { type: "array", items: { type: "object", properties: { title: { type: "string" }, body: { type: "string" } }, required: ["title", "body"], additionalProperties: false } },
+                campaignHeadline: { type: "string" },
+                campaignIntro: { type: "string" },
+                campaignDescriptions: { type: "object", additionalProperties: { type: "string" } },
+                processHeadline: { type: "string" },
+                processIntro: { type: "string" },
+                processSteps: { type: "array", items: { type: "object", properties: { number: { type: "string" }, title: { type: "string" }, body: { type: "string" } }, required: ["number", "title", "body"], additionalProperties: false } },
+                investHeadline: { type: "string" },
+                investIntro: { type: "string" },
+                teamQuote: { type: "string" },
+                whyHeadline: { type: "string" },
+                whyIntro: { type: "string" },
+                whyCredentials: { type: "array", items: { type: "object", properties: { title: { type: "string" }, body: { type: "string" } }, required: ["title", "body"], additionalProperties: false } },
+                ctaHeadline: { type: "string" },
+                ctaBody: { type: "string" },
+                ctaButtonText: { type: "string" },
+              },
+              required: ["coverTagline","coverSubtitle","marketHeadline","marketIntro","marketStats","marketInsights","marketSource","goalsHeadline","goalsIntro","goalsList","campaignHeadline","campaignIntro","campaignDescriptions","processHeadline","processIntro","processSteps","investHeadline","investIntro","teamQuote","whyHeadline","whyIntro","whyCredentials","ctaHeadline","ctaBody","ctaButtonText"],
+              additionalProperties: false,
+            },
+          },
+        } as any,
       });
       const rawContent = response.choices[0].message.content;
+      console.log(`[Generator] Attempt ${attempt} raw content type: ${typeof rawContent}, null: ${rawContent === null}`);
       copy = extractJson(rawContent);
       break; // success — exit retry loop
     } catch (err) {
