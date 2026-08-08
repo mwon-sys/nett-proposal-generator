@@ -116,3 +116,9 @@ export async function listProposals(): Promise<Proposal[]> {
   const result = await db.select().from(proposals).orderBy(proposals.createdAt);
   return result.reverse();
 }
+
+export async function deleteProposal(slug: string): Promise<void> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.delete(proposals).where(eq(proposals.slug, slug));
+}

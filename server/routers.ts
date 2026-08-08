@@ -4,7 +4,7 @@ import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router } from "./_core/trpc";
-import { createProposal, getProposalBySlug, listProposals, updateProposalData } from "./db";
+import { createProposal, deleteProposal, getProposalBySlug, listProposals, updateProposalData } from "./db";
 import { generateProposal } from "./proposalGenerator";
 import { APP_PASSWORD } from "../shared/constants";
 import { storagePut } from "./storage";
@@ -134,6 +134,13 @@ export const appRouter = router({
         totalMonthlySpend: p.totalMonthlySpend,
       }));
     }),
+
+    delete: publicProcedure
+      .input(z.object({ slug: z.string() }))
+      .mutation(async ({ input }) => {
+        await deleteProposal(input.slug);
+        return { success: true };
+      }),
   }),
 });
 

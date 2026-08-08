@@ -1,7 +1,9 @@
 import { useLocation } from "wouter";
+import { useState } from "react";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
-import { Loader2, Plus, ExternalLink, FileText, Clock, CheckCircle, AlertCircle } from "lucide-react";
+import { Loader2, Plus, ExternalLink, FileText, Clock, CheckCircle, AlertCircle, Trash2 } from "lucide-react";
+import { toast } from "sonner";
 
 const SESSION_KEY = "nett_auth";
 
@@ -30,6 +32,19 @@ function StatusBadge({ status }: { status: string }) {
 export default function Dashboard() {
   const [, navigate] = useLocation();
   const isAuthenticated = sessionStorage.getItem(SESSION_KEY) === "true";
+  const [confirmSlug, setConfirmSlug] = useState<string | null>(null);
+  const utils = trpc.useUtils();
+
+  const deleteMutation = trpc.proposal.delete.useMutation({
+    onSuccess: () => {
+      utils.proposal.list.invalidate();
+      setConfirmSlug(null);
+      toast.success("Proposal deleted.");
+    },
+    onError: () => {
+      toast.error("Failed to delete proposal.");
+    },
+  });
 
   const { data: proposals, isLoading } = trpc.proposal.list.useQuery(undefined, {
     refetchInterval: (query) => {
@@ -122,6 +137,13 @@ export default function Dashboard() {
                       >
                         <ExternalLink className="w-4 h-4" />
                       </button>
+                      <button
+                        onClick={e => { e.stopPropagation(); setConfirmSlug(p.slug); }}
+                        className="ml-3 text-gray-300 hover:text-red-500 transition-colors"
+                        title="Delete proposal"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
                     </td>
                   </tr>
                 ))}
@@ -130,6 +152,29 @@ export default function Dashboard() {
           </div>
         )}
       </main>
+
+      {/* Delete confirmation dialog */}
+      {confirmSlug && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl shadow-xl p-8 max-w-sm w-full mx-4">
+            <h3 className="text-lg font-semibold text-gray-900 mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>Delete Proposal?</h3>
+            <p className="text-gray-500 text-sm mb-6">This cannot be undone. The shareable link will stop working immediately.</p>
+            <div className="flex gap-3 justify-end">
+              <Button variant="outline" onClick={() => setConfirmSlug(null)} disabled={deleteMutation.isPending}>
+                Cancel
+              </Button>
+              <Button
+                onClick={() => deleteMutation.mutate({ slug: confirmSlug })}
+                disabled={deleteMutation.isPending}
+                className="bg-red-600 hover:bg-red-700 text-white"
+              >
+                {deleteMutation.isPending ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Trash2 className="w-4 h-4 mr-2" />}
+                Delete
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
