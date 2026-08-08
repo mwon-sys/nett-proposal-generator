@@ -37,6 +37,25 @@ export default function Home() {
   const verifyMutation = trpc.proposal.verifyPassword.useMutation();
   const createMutation = trpc.proposal.create.useMutation();
   const uploadImageMutation = trpc.proposal.uploadImage.useMutation();
+  const previewImagesMutation = trpc.proposal.previewImages.useMutation();
+
+  const [imagePreviewCount, setImagePreviewCount] = useState<number | null>(null);
+  const [isCheckingImages, setIsCheckingImages] = useState(false);
+
+  const handleWebsiteBlur = async () => {
+    const url = clientWebsite.trim();
+    if (!url || url.length < 5) return;
+    setIsCheckingImages(true);
+    setImagePreviewCount(null);
+    try {
+      const result = await previewImagesMutation.mutateAsync({ url });
+      setImagePreviewCount(result.count);
+    } catch {
+      setImagePreviewCount(0);
+    } finally {
+      setIsCheckingImages(false);
+    }
+  };
 
   const handleImageFiles = async (files: FileList | null) => {
     if (!files) return;
@@ -162,7 +181,28 @@ export default function Home() {
               </div>
               <div className="col-span-2 sm:col-span-1">
                 <Label className="text-sm font-medium text-gray-700 mb-1.5 block">Website URL *</Label>
-                <Input value={clientWebsite} onChange={e => setClientWebsite(e.target.value)} placeholder="https://example.com" required />
+                <Input
+                  value={clientWebsite}
+                  onChange={e => { setClientWebsite(e.target.value); setImagePreviewCount(null); }}
+                  onBlur={handleWebsiteBlur}
+                  placeholder="https://example.com"
+                  required
+                />
+                {isCheckingImages && (
+                  <p className="text-xs text-gray-400 mt-1 flex items-center gap-1">
+                    <Loader2 className="w-3 h-3 animate-spin" /> Checking site for images…
+                  </p>
+                )}
+                {!isCheckingImages && imagePreviewCount !== null && imagePreviewCount < 6 && uploadedImages.length < 6 && (
+                  <div className="mt-2 flex items-start gap-2 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
+                    <span className="text-amber-500 text-sm leading-none mt-0.5">⚠️</span>
+                    <p className="text-xs text-amber-700">
+                      {imagePreviewCount === 0
+                        ? "We couldn't find any images on this site. Please upload photos in the Photos section below for the best results."
+                        : `We only found ${imagePreviewCount} image${imagePreviewCount !== 1 ? "s" : ""} on this site. Please upload photos below to fill all 6 proposal slots.`}
+                    </p>
+                  </div>
+                )}
               </div>
               <div className="col-span-2">
                 <Label className="text-sm font-medium text-gray-700 mb-1.5 block">Industry / Business Type *</Label>
@@ -247,7 +287,10 @@ export default function Home() {
           <section className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
             <div className="mb-6">
               <h2 className="text-lg font-semibold text-gray-900" style={{ fontFamily: "'Playfair Display', serif" }}>Photos <span className="text-gray-400 font-normal text-sm">(Optional)</span></h2>
-              <p className="text-gray-500 text-sm mt-1">Upload up to 6 photos to use in the proposal. If left blank, images will be pulled automatically from the client's website.</p>
+              <p className="text-gray-500 text-sm mt-1">
+                Upload up to 6 photos to use in the proposal. If left blank, images will be pulled automatically from the client's website.
+                {imagePreviewCount !== null && imagePreviewCount < 6 && <strong className="text-amber-600"> Recommended for this client.</strong>}
+              </p>
               <p className="text-gray-400 text-xs mt-1">Slots (in order): Cover · Goals · Campaign · Process 1 · Process 2 · Process 3</p>
             </div>
 

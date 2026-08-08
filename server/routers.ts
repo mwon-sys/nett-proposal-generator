@@ -8,6 +8,7 @@ import { createProposal, getProposalBySlug, listProposals, updateProposalData } 
 import { generateProposal } from "./proposalGenerator";
 import { APP_PASSWORD } from "../shared/constants";
 import { storagePut } from "./storage";
+import { scrapeWebsiteImages } from "./scraper";
 
 const channelSchema = z.object({
   name: z.string(),
@@ -31,6 +32,17 @@ export const appRouter = router({
       .input(z.object({ password: z.string() }))
       .mutation(({ input }) => {
         return { valid: input.password === APP_PASSWORD };
+      }),
+
+    previewImages: publicProcedure
+      .input(z.object({ url: z.string().min(1) }))
+      .mutation(async ({ input }) => {
+        try {
+          const result = await scrapeWebsiteImages(input.url);
+          return { count: result.images.length };
+        } catch {
+          return { count: 0 };
+        }
       }),
 
     uploadImage: publicProcedure
