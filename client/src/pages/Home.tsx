@@ -197,9 +197,7 @@ export default function Home() {
                   <div className="mt-2 flex items-start gap-2 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
                     <span className="text-amber-500 text-sm leading-none mt-0.5">⚠️</span>
                     <p className="text-xs text-amber-700">
-                      {imagePreviewCount === 0
-                        ? "We couldn't find any images on this site. Please upload photos in the Photos section below for the best results."
-                        : `We only found ${imagePreviewCount} image${imagePreviewCount !== 1 ? "s" : ""} on this site. Please upload photos below to fill all 6 proposal slots.`}
+                      This site has limited images available. Please upload photos in the Photos section below for the best proposal results.
                     </p>
                   </div>
                 )}
