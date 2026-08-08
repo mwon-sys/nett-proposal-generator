@@ -258,6 +258,36 @@ export default function ProposalView() {
 
   const mgmtFee = getManagementFee(pd.totalMonthlySpend, pd.isEcommerce);
   const imgs = (pd as any).images || {};
+  // Normalize a stored image URL: decode HTML entities and strip Shopify resize params
+  const normalizeImgUrl = (url: string | null | undefined): string | null => {
+    if (!url) return null;
+    let u = url
+      .replace(/&amp%3[Bb]/g, "&")
+      .replace(/%26amp%3[Bb]/g, "&")
+      .replace(/&amp;/gi, "&")
+      .replace(/%26/g, "&");
+    // Strip Shopify width/height/crop params
+    try {
+      const parsed = new URL(u);
+      if (parsed.hostname.includes("shopify") || parsed.pathname.includes("cdn/shop")) {
+        parsed.searchParams.delete("width");
+        parsed.searchParams.delete("height");
+        parsed.searchParams.delete("crop");
+        u = parsed.toString();
+      }
+    } catch { /* keep as-is */ }
+    return u;
+  };
+  // Normalize all image slots from stored data
+  const normImgs = {
+    hero:     normalizeImgUrl(imgs.hero),
+    goals:    normalizeImgUrl(imgs.goals),
+    campaign: normalizeImgUrl(imgs.campaign),
+    process1: normalizeImgUrl(imgs.process1),
+    process2: normalizeImgUrl(imgs.process2),
+    process3: normalizeImgUrl(imgs.process3),
+    extras:   (imgs.extras || []).map((e: string) => normalizeImgUrl(e)).filter(Boolean),
+  };
   // Assign images strictly — never reuse the same URL across sections
   const usedImgs = new Set<string>();
   const pickImg = (...candidates: (string | null | undefined)[]): string | null => {
@@ -266,15 +296,15 @@ export default function ProposalView() {
     }
     return null; // no unique image available — leave slot empty
   };
-  const heroImg   = pickImg(imgs.hero, imgs.campaign) ?? "";
-  const goalsImg  = pickImg(imgs.goals, imgs.campaign, imgs.process1, imgs.process2, imgs.process3) ?? null;
-  const ctaImg    = pickImg(imgs.extras?.[0], imgs.campaign, imgs.process1, imgs.process2, imgs.process3, imgs.goals) ?? null;
+  const heroImg   = pickImg(normImgs.hero, normImgs.campaign) ?? "";
+  const goalsImg  = pickImg(normImgs.goals, normImgs.campaign, normImgs.process1, normImgs.process2, normImgs.process3) ?? null;
+  const ctaImg    = pickImg(normImgs.extras?.[0], normImgs.campaign, normImgs.process1, normImgs.process2, normImgs.process3, normImgs.goals) ?? null;
   const copy = (pd as any).copy || {};
   // Process ribbon: pick up to 3 remaining unique images
   const processImgs = [
-    pickImg(imgs.process1, imgs.campaign, imgs.process2, imgs.process3),
-    pickImg(imgs.process2, imgs.campaign, imgs.process3),
-    pickImg(imgs.process3, imgs.campaign),
+    pickImg(normImgs.process1, normImgs.campaign, normImgs.process2, normImgs.process3),
+    pickImg(normImgs.process2, normImgs.campaign, normImgs.process3),
+    pickImg(normImgs.process3, normImgs.campaign),
   ].filter(Boolean) as string[];
 
   const GREEN = "oklch(0.42 0.12 145)";

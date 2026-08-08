@@ -135,16 +135,22 @@ export async function scrapeWebsiteImages(url: string): Promise<ScrapedImages> {
     for (const raw of allRawUrls) {
       try {
         let resolved = raw;
-        // Decode HTML entities (e.g. &amp; → &) that appear in HTML attributes
-        resolved = resolved.replace(/&amp;/gi, "&").replace(/&lt;/gi, "<").replace(/&gt;/gi, ">").replace(/&quot;/gi, '"');
-
-        if (raw.startsWith("//")) {
-          resolved = `https:${raw}`;
-        } else if (raw.startsWith("/")) {
-          resolved = `${baseUrl.protocol}//${baseUrl.host}${raw}`;
-        } else if (!raw.startsWith("http")) {
-          resolved = `${baseUrl.protocol}//${baseUrl.host}/${raw}`;
+        // Step 1: resolve relative URLs first
+        if (resolved.startsWith("//")) {
+          resolved = `https:${resolved}`;
+        } else if (resolved.startsWith("/")) {
+          resolved = `${baseUrl.protocol}//${baseUrl.host}${resolved}`;
+        } else if (!resolved.startsWith("http")) {
+          resolved = `${baseUrl.protocol}//${baseUrl.host}/${resolved}`;
         }
+
+        // Step 2: decode all HTML/URL encoding variants of & so query params parse correctly
+        // Handles: &amp; &amp%3B &amp%3b %26amp%3B and plain %26
+        resolved = resolved
+          .replace(/&amp%3[Bb]/g, "&")   // &amp%3B → &
+          .replace(/%26amp%3[Bb]/g, "&") // %26amp%3B → &
+          .replace(/&amp;/gi, "&")        // &amp; → &
+          .replace(/%26/g, "&");          // %26 → &
 
         // Upgrade Shopify URLs to full resolution before deduplication
         resolved = upgradeShopifyUrl(resolved);
