@@ -135,6 +135,9 @@ export async function scrapeWebsiteImages(url: string): Promise<ScrapedImages> {
     for (const raw of allRawUrls) {
       try {
         let resolved = raw;
+        // Decode HTML entities (e.g. &amp; → &) that appear in HTML attributes
+        resolved = resolved.replace(/&amp;/gi, "&").replace(/&lt;/gi, "<").replace(/&gt;/gi, ">").replace(/&quot;/gi, '"');
+
         if (raw.startsWith("//")) {
           resolved = `https:${raw}`;
         } else if (raw.startsWith("/")) {
