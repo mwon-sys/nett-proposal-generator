@@ -480,8 +480,8 @@ export default function ProposalView() {
           <div className="grid grid-cols-5" style={{ minHeight: "560px" }}>
             {/* Left: full-height image */}
             <div className="col-span-2 relative overflow-hidden">
-              {imgs.campaign ? (
-                <img src={imgs.campaign} alt={pd.clientName} className="absolute inset-0 w-full h-full object-cover"
+              {normImgs.campaign ? (
+                <img src={normImgs.campaign} alt={pd.clientName} className="absolute inset-0 w-full h-full object-cover"
                   onError={(e) => { const el = e.target as HTMLImageElement; el.style.display = "none"; }} />
               ) : (
                 <div className="absolute inset-0 flex items-center justify-center" style={{ background: "oklch(0.18 0.04 240)" }}>
