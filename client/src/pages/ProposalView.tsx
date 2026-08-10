@@ -1,6 +1,6 @@
 import { useParams, useLocation } from "wouter";
 import { trpc } from "@/lib/trpc";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Loader2, Download, Share2, ArrowLeft, CheckCircle, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
@@ -317,10 +317,14 @@ export default function ProposalView() {
       <div className="no-print sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
         <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Button variant="ghost" size="sm" onClick={() => navigate("/")} className="gap-2 text-gray-600">
-              <ArrowLeft className="w-4 h-4" />Back
-            </Button>
-            <div className="h-5 w-px bg-gray-200" />
+            {cameFromApp && (
+              <>
+                <Button variant="ghost" size="sm" onClick={() => navigate("/")} className="gap-2 text-gray-600">
+                  <ArrowLeft className="w-4 h-4" />Back
+                </Button>
+                <div className="h-5 w-px bg-gray-200" />
+              </>
+            )}
             <span className="text-sm font-medium text-gray-700">{pd.clientName} — Proposal</span>
             {data.status === "ready" && <CheckCircle className="w-4 h-4 text-green-500" />}
           </div>
@@ -731,3 +735,9 @@ export default function ProposalView() {
     </div>
   );
 }
+  // Show Back button only when the user navigated here from within the app (i.e. from the dashboard).
+  // When a prospect opens the proposal via a direct shareable link, hide it — they have no dashboard to go back to.
+  const cameFromApp = useMemo(() => {
+    const SESSION_KEY = "nett_auth";
+    return sessionStorage.getItem(SESSION_KEY) === "true";
+  }, []);
