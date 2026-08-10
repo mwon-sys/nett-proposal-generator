@@ -178,6 +178,12 @@ export default function ProposalView() {
   const { slug } = useParams<{ slug: string }>();
   const [, navigate] = useLocation();
   const [copied, setCopied] = useState(false);
+  // Show Back button only when the user navigated here from within the app (i.e. from the dashboard).
+  // When a prospect opens the proposal via a direct shareable link, hide it — they have no dashboard to go back to.
+  const cameFromApp = useMemo(() => {
+    const SESSION_KEY = "nett_auth";
+    return sessionStorage.getItem(SESSION_KEY) === "true";
+  }, []);
 
   const { data, isLoading, error } = trpc.proposal.getBySlug.useQuery(
     { slug: slug! },
@@ -735,9 +741,3 @@ export default function ProposalView() {
     </div>
   );
 }
-  // Show Back button only when the user navigated here from within the app (i.e. from the dashboard).
-  // When a prospect opens the proposal via a direct shareable link, hide it — they have no dashboard to go back to.
-  const cameFromApp = useMemo(() => {
-    const SESSION_KEY = "nett_auth";
-    return sessionStorage.getItem(SESSION_KEY) === "true";
-  }, []);
